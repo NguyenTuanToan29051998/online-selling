@@ -67,7 +67,7 @@ const Header: FC<PropsType> = (props) => {
                   height={24}
                 />
               </div>
-              <p className={styles.homeText}>Trang chủ</p>
+              <p className={styles.homeText} onClick={() => router.push('/home')} role="presentation">Trang chủ</p>
             </div>
             <div className={styles.menuItem}>
               <div className="d-flex align-items-center">
@@ -106,12 +106,12 @@ const Header: FC<PropsType> = (props) => {
           </div>
         </div>
         <div className={styles.quickLink}>
-          <p className={styles.quickLinkItem}>Trái cây</p>
-          <p className={styles.quickLinkItem}>Trái cây</p>
-          <p className={styles.quickLinkItem}>Trái cây</p>
-          <p className={styles.quickLinkItem}>Trái cây</p>
-          <p className={styles.quickLinkItem}>Trái cây</p>
-          <p className={styles.quickLinkItem}>Trái cây</p>
+          <p className={styles.quickLinkItem}>áo ấm nam</p>
+          <p className={styles.quickLinkItem}>áo khoác nam</p>
+          <p className={styles.quickLinkItem}>áo khoác</p>
+          <p className={styles.quickLinkItem}>áo ấm</p>
+          <p className={styles.quickLinkItem}>áo mùa đông</p>
+          <p className={styles.quickLinkItem}>áo dạ nam</p>
         </div>
       </header>
     </>

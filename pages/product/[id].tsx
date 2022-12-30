@@ -1,19 +1,18 @@
 import type { NextPageWithLayout } from '../_app';
 import { ReactElement, useEffect, useState } from 'react';
-import HomeBody from '../../components/templates/HomeBody';
 import Layout from '../../layouts';
 import axios from 'axios';
-import { BannerType } from '@/models/banner';
 import CustomLoading from '../../components/molecules/CustomLoading';
+import ProductDetailBody from '../../components/templates/ProductDetailBody';
 
-const Home: NextPageWithLayout = () => {
+const ProductDetail: NextPageWithLayout = () => {
 
   return (
-    <HomeBody />
+    <ProductDetailBody />
   );
 };
 
-Home.getLayout = function getLayout(page: ReactElement) {
+ProductDetail.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout>
       {page}
@@ -21,4 +20,4 @@ Home.getLayout = function getLayout(page: ReactElement) {
   );
 };
 
-export default Home;
+export default ProductDetail;

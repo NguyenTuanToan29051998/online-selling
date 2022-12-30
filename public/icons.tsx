@@ -5,8 +5,8 @@ const arrowLeftIcon = (
 );
 
 const angleRightIcon = (
-  <svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="biểu tượng mũi tên phải">
-    <path d="M1.40039 10.8L6.20039 6.00001L1.40039 1.20001" stroke="#535353" strokeLinecap="square" strokeWidth="2" />
+  <svg width="7" height="11" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="biểu tượng mũi tên phải">
+    <path d="M1.40039 10.8L6.20039 6.00001L1.40039 1.20001" stroke="#0d5cb6" strokeLinecap="square" strokeWidth="2" />
   </svg>
 );
 
@@ -227,9 +227,94 @@ const selectedAnswerIcon = (
   </svg>
 );
 
-const starIcon = (
-  <svg stroke="#fdd836" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" color="#fdd836" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
+const starIcon = (width: string, color: string) => (
+  <svg stroke={color} fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" color={color} height={width} width={width} xmlns="http://www.w3.org/2000/svg">
     <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+  </svg>
+);
+
+const indicatorIcon = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" className="mdl-js">
+	<g fill="none" fillRule="evenodd">
+		<g>
+			<g>
+				<g>
+					<g>
+						<g>
+							<g>
+								<g>
+									<path fill="#0D5CB6" d="M0 0h16c2.21 0 4 1.79 4 4v16L0 0z" transform="translate(-804 -366) translate(180 144) translate(484 114) translate(16 80) translate(0 28) translate(124)"/>
+									<g fill="#FFF">
+										<path d="M4.654 7.571L8.88 3.176c.22-.228.582-.235.81-.016.229.22.236.582.017.81L5.04 8.825c-.108.113-.258.176-.413.176-.176 0-.33-.076-.438-.203L2.136 6.37c-.205-.241-.175-.603.067-.808.242-.204.603-.174.808.068L4.654 7.57z" transform="translate(-804 -366) translate(180 144) translate(484 114) translate(16 80) translate(0 28) translate(124) translate(7.5)"/>
+									</g>
+								</g>
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>
+);
+
+const removeIcon = (
+  <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20" className="mdl-js">
+    <defs>
+        <path id="ajeife9ema" d="M11.667 1.667L6.672 1.667 4.994 1.667 0 1.667 0 0 4.994 0 11.667 0z"/>
+    </defs>
+    <g fill="none" fillRule="evenodd">
+        <g>
+            <g>
+                <g>
+                    <g>
+                        <g transform="translate(-334 -5910) translate(80 5570) translate(214 340) translate(40) translate(4.167 9.167)">
+                            <use fill="#787878" xlinkHref="#ajeife9ema"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
+);
+
+const addIcon = (
+  <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20" className="mdl-js">
+    <defs>
+        <path id="jfmgrwavha" d="M11.667 6.655L6.672 6.655 6.672 11.667 4.994 11.667 4.994 6.655 0 6.655 0 5.011 4.994 5.011 4.994 0 6.672 0 6.672 5.011 11.667 5.011z"/>
+    </defs>
+    <g fill="none" fillRule="evenodd">
+        <g>
+            <g>
+                <g>
+                    <g>
+                        <g>
+                            <g>
+                                <g>
+                                    <g transform="translate(-447 -3846) translate(80 3626) translate(299 140) translate(0 44) translate(0 32) translate(64) translate(4 4) translate(4.167 4.167)">
+                                        <mask id="4rqhsoutfb" fill="#fff">
+                                            <use xlinkHref="#jfmgrwavha"/>
+                                        </mask>
+                                        <use fill="#787878" xlinkHref="#jfmgrwavha"/>
+                                        <g fill="#787878" mask="url(#4rqhsoutfb)">
+                                            <path d="M0 0H20V20H0z" transform="translate(-4.167 -4.167)"/>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
+);
+
+const checkGreenIcon = (
+  <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fillRule="evenodd" clipRule="evenodd" d="M13.8036 4.34615C13.9988 4.54142 13.9988 4.858 13.8036 5.05326L6.47401 12.3828C6.38024 12.4766 6.25307 12.5292 6.12046 12.5292C5.98785 12.5292 5.86067 12.4766 5.7669 12.3828L2.14645 8.76234C1.95118 8.56708 1.95118 8.2505 2.14645 8.05524C2.34171 7.85998 2.65829 7.85998 2.85355 8.05524L6.12046 11.3221L13.0964 4.34615C13.2917 4.15089 13.6083 4.15089 13.8036 4.34615Z" fill="#00AB56"></path>
   </svg>
 );
 
@@ -259,4 +344,8 @@ export {
   takeTest,
   selectedAnswerIcon,
   starIcon,
+  indicatorIcon,
+  removeIcon,
+  addIcon,
+  checkGreenIcon,
 };

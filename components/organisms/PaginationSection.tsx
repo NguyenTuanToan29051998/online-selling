@@ -36,7 +36,7 @@ const PaginationSection: NextPage<PropType> = (props) => {
   const changePage = (i: number) => {
     setCurrentPage(i);
     window.scrollTo({
-      top: 0,
+      top: 1000,
       behavior: 'smooth',
     });
   };
