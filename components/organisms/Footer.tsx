@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { FC, useEffect, useState } from 'react';
 import { REGEX_EMAIL } from '../../public/const';
-import { emailIcon, facebookIcon, phoneIcon } from '../../public/icons';
 import InputField from '../atoms/inputs/InputField';
 import styles from '../../styles/components/organisms/Footer.module.scss';
 import useTrans from '../../hooks/useTrans';
@@ -63,12 +62,12 @@ const Footer: FC<PropsType> = (props) => {
         </div>
         <div className={`${styles.lineContent}`}>
           <div className="d-flex mt-4 mb-4 align-items-center gap-3">
-            {emailIcon}
+            {/* {emailIcon} */}
             <div className="d-flex flex-column">
             </div>
           </div>
           <div className="d-flex align-items-center gap-3">
-            {phoneIcon}
+            {/* {phoneIcon} */}
             <span>
             </span>
           </div>
