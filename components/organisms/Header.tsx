@@ -1,13 +1,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { FC, useContext, useEffect, useState } from 'react';
-import { checkBlueIcon, searchIcon1, searchIcon, angleLeftIcon, closeIcon1, angleDownIcon } from '../../public/icons';
-import Navigations from './Navigations';
-import useTrans from '../../hooks/useTrans';
+import { FC, useEffect, useState } from 'react';
 import styles from '../../styles/components/organisms/Header.module.scss';
-import MenuIcon from '../atoms/icons/MenuIcon';
 import { Menu } from '@/models/menu';
-import { CustomContext } from '../../AppContext';
 
 type PropsType = {
   isMasterPage?: boolean,
@@ -20,22 +15,9 @@ const currentColor = ['#A4C955', '#E88E49', '#2D6AAA'];
 const HEADER_HEIGTH = '83px';
 
 const Header: FC<PropsType> = (props) => {
-  const { isMasterPage, menus, userType } = props;
-  const trans = useTrans();
   const router = useRouter();
-  const { language, changeLanguage, changeCurrentSite } = useContext(CustomContext);
-
-  const [showNavBar, setShowNavBar] = useState<boolean>(false);
-  const [showLangChoice, setShowLangChoice] = useState<boolean>(false);
   const [scrollDirection, setScrollDirection] = useState<string | null>(null);
-  const [clickedSearch, setClickedSearch] = useState<boolean>(false);
-  const [searchContent, setSearchContent] = useState<string>('');
-  const [isEnglish, setIsEngLish] = useState<boolean>(false);
-  const [showDropdownLanguage, setShowDropdownLanguage] = useState<boolean>(false);
-
-  const showHeader = () => {
-    setShowNavBar(!showNavBar);
-  };
+  ;
 
   useEffect(() => {
     let lastScrollY = window.pageYOffset;
@@ -51,32 +33,6 @@ const Header: FC<PropsType> = (props) => {
     window.addEventListener("scroll", updateScrollDirection, { passive: true });
   }, [scrollDirection]);
 
-  const changeLang = (lang: string) => {
-    setShowLangChoice(false);
-    setIsEngLish(lang === "en");
-    setShowDropdownLanguage(false);
-  };
-
-  const nameTypeUser = () => {
-    switch (userType) {
-      case '0':
-        changeCurrentSite('forSib');
-        return trans.SIB;
-      case '1':
-        changeCurrentSite('forInter');
-        return trans.intermediaries;
-      case '2':
-        changeCurrentSite('forPolicy');
-        return trans.policyMaker;
-      default:
-        return '';
-    }
-  };
-
-  const handleHiddenSeacrch = () => {
-    setClickedSearch(false);
-    setSearchContent('');
-  };
 
   return (
     <>
@@ -84,115 +40,80 @@ const Header: FC<PropsType> = (props) => {
         className={scrollDirection === 'up' ? `${styles.wrapper} ${styles.stiky}` : styles.wrapper}
         style={{ top: scrollDirection === 'up' ? '0' : `-${HEADER_HEIGTH}` }}
       >
-        {clickedSearch ? (
-          <div className={styles.search}>
-            <div className={styles.angleLeftIcon} onClick={handleHiddenSeacrch} role="presentation">{angleLeftIcon}</div>
-            <div className={styles.inpWrapper}>
-              <input className={styles.inpSearch} type="text" name="" id="" placeholder={trans.search} aria-label="Tìm kiểm" value={searchContent} onChange={(e) => setSearchContent(e.target.value)} />
-              {searchContent ? (
-                <div className={styles.closeIcon} onClick={() => setSearchContent('')} role="presentation">{closeIcon1}</div>
-              ) : (
-                <div className={styles.searchIcon}>{searchIcon}</div>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className={styles.header}>
-            <div className={styles.leftArea}>
-              <div
-                className="d-flex"
-                onClick={() => router.push('/home')}
-                role="presentation"
-              >
-                <div className={styles.leftAreaMainlogo}>
-                  <Image
-                    src="/assets/logo-toeic.webp"
-                    width={210}
-                    height={70}
-                    alt="main-logo"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className={styles.rightArea}>
-              <div className={styles.flagArea}>
-                <div className={styles.flagAreaContent} onClick={() => setShowDropdownLanguage(!showDropdownLanguage)} role="presentation">
-                  <div className={styles.lang}>
-                    <Image
-                      src={`${isEnglish ? '/assets/english-flag.svg' : '/assets/vietnam-flag.svg'}`}
-                      width={26}
-                      height={26}
-                      alt={`${isEnglish ? 'English flag icon' : 'Viet Nam flag icon'}`}
-                      className={styles.image}
-                    />
-                    {isEnglish ? trans.English : trans.Vietnamese}
-                    <span className={styles.checked}>{angleDownIcon}</span>
-                  </div>
-                </div>
-              </div>
-              {showDropdownLanguage && (
-                <div className={styles.languageList}>
-                  <div className={styles.flagArea}>
-                    <div className={styles.flagAreaContent}>
-                      <div
-                        className={styles.lang}
-                        onClick={() => changeLang("en")}
-                        onKeyDown={() => changeLang("en")}
-                        role="presentation"
-                      >
-                        <Image
-                          src="/assets/english-flag.svg"
-                          width={26}
-                          height={26}
-                          alt="English flag icon"
-                          className={styles.image}
-                        />
-                        {trans.English}
-                        {isEnglish && (
-                          <span className={styles.checked}>{checkBlueIcon}</span>
-                        )}
-                      </div>
-                      <div className="mt-3">
-                        <div
-                          className={styles.lang}
-                          onClick={() => changeLang("vi")}
-                          onKeyDown={() => changeLang("vi")}
-                          role="presentation"
-                        >
-                          <Image
-                            src="/assets/vietnam-flag.svg"
-                            width={26}
-                            height={26}
-                            alt="Viet Nam flag icon"
-                            className={styles.image}
-                          />
-                          {trans.Vietnamese}
-                          {!isEnglish && (
-                            <span className={styles.checked}>{checkBlueIcon}</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-      </header>
-      <div className={styles.navContainer} style={{ top: scrollDirection === 'up' ? HEADER_HEIGTH : '0' }}>
-        <div className={styles.nav}>
-          {!isMasterPage && (
-            <>
-              <Navigations
-                showNavBar={showNavBar}
-                setShowNavBar={setShowNavBar}
-                navMenus={userType?.includes('3') ? (menus || []).filter(menu => menu.menuUrl !== '/network') : menus!}
+        <div className={styles.header}>
+          <div className={styles.leftArea} onClick={() => router.push('/home')} role="presentation">
+            <div className={styles.leftAreaMainlogo}>
+              <Image
+                src="/assets/logo-tiki.png"
+                width={66}
+                height={40}
+                alt="main-logo"
               />
-            </>
-          )}
+            </div>
+            <div className={styles.formSearch}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className={styles.iconSearch} src="/assets/img-search.png" alt="icon-search" />
+              <input className={styles.searchInput} placeholder="Bạn tìm gì hôm nay" />
+              <button className={styles.searchBtn}>Tìm kiếm</button>
+            </div>
+          </div>
+          <div className={styles.rightArea}>
+            <div className={styles.menuItem}>
+              <div className="d-flex align-items-center">
+                <Image
+                  src="/assets/home.png"
+                  alt="header_menu_item_home"
+                  width={24}
+                  height={24}
+                />
+              </div>
+              <p className={styles.homeText}>Trang chủ</p>
+            </div>
+            <div className={styles.menuItem}>
+              <div className="d-flex align-items-center">
+                <Image
+                  src="/assets/product.png"
+                  alt="header_menu_item_home"
+                  width={24}
+                  height={24}
+                />
+              </div>
+              <p className={styles.product}>Sản phẩm</p>
+            </div>
+            <div className={`${styles.menuItem} me-2`}>
+              <div className="d-flex align-items-center">
+                <Image
+                  src="/assets/user.png"
+                  alt="header_menu_item_home"
+                  width={24}
+                  height={24}
+                />
+              </div>
+              <p className={styles.product}>Tui</p>
+            </div>
+              <div className="d-flex align-items-center">
+                <div className={styles.cart}>
+                  <div className={styles.cartIcon}>
+                    <Image
+                      src="/assets/cart.png"
+                      alt="header_menu_item_home"
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                </div>
+              </div>
+          </div>
         </div>
-      </div>
+        <div className={styles.quickLink}>
+          <p className={styles.quickLinkItem}>Trái cây</p>
+          <p className={styles.quickLinkItem}>Trái cây</p>
+          <p className={styles.quickLinkItem}>Trái cây</p>
+          <p className={styles.quickLinkItem}>Trái cây</p>
+          <p className={styles.quickLinkItem}>Trái cây</p>
+          <p className={styles.quickLinkItem}>Trái cây</p>
+        </div>
+      </header>
     </>
   );
 };

@@ -2,86 +2,140 @@
   background-color: #fff;
   z-index: 10;
   transition: .5s;
-
-  .search {
-    display: none;
-  }
+  max-width: 1440px;;
+  margin: 0 auto;
+  padding: 8px 0px;
 
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 2rem;
-    max-width: calc(var(--max-width-container) - 11rem);
-    margin: 0 auto;
+    padding: 0 24px;
     flex: 1 1 auto;
 
     .leftArea {
       display: flex;
-      justify-content: center;
-      align-items: flex-start;
       cursor: pointer;
-      flex-direction: row;
+      width: 63%;
 
       &Mainlogo {
         margin-right: 3.5rem;
         display: flex;
       }
 
-      &Sublogo {
+      .formSearch {
+        width: 100%;
         display: flex;
-        justify-content: center;
+        position: relative;
+        border: 1px solid rgb(221, 221, 227);
+        border-radius: 8px;
+        -webkit-box-align: center;
         align-items: center;
-        gap: 0.5rem;
+
+        .iconSearch {
+          width: 20px;
+          height: 20px;
+          margin: 0px 0px 0px 18px;
+        }
+
+        .searchInput {
+          border: 0px;
+          padding: 0px 8px;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 150%;
+          border-top-left-radius: 8px;
+          border-bottom-left-radius: 8px;
+          flex: 1 1 0%;
+          outline: none;
+          border-right: 1px solid #dddde3;
+        }
+
+        .searchBtn {
+          cursor: pointer;
+          border: 0px;
+          width: 92px;
+          height: 38px;
+          padding: 4px;
+          border-radius: 0px 8px 8px 0px;
+          background: transparent;
+          color: rgb(10, 104, 255);
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 150%;
+          outline: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+        }
       }
     }
 
     .rightArea {
-      display: block;
+      display: flex;
+      .menuItem {
+        display: flex;
+        gap: 0.25rem;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        padding: 8px 16px;
+        cursor: pointer;
+        position: relative;
+        border-radius: 8px;
+        &:hover {
+          background-color: rgba(0, 96, 255, 0.12);
+        }
+      }
 
-      .flagArea {
-        margin-top: 0.125rem;
-        &Content {
-          border: 1px solid var(--gray-400);
-          padding: 10.5px;
-          border-radius: 0.5rem;
-          .lang {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            gap: 1rem;
-            min-width: 8.5rem;
-            cursor: pointer;
-    
-            .image {
-              border-radius: 50%;
-            }
-    
-            .checked {
-              svg {
-                width: 1rem;
-              }
-            }
-          }
+      .homeText {
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 150%;
+        color: rgb(10, 104, 255);
+        margin-bottom: 0;
+      }
+
+      .product {
+        display: flex;
+        align-items: center;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 150%;
+        color: rgb(128, 128, 137);
+        margin-bottom: 0;
+        padding-right: 0.5rem;
+      }
+
+      .cart {
+        padding-left: 1.25rem;
+        border-left: 2px solid #ebebf0;
+        .cartIcon {
+          display: flex;
+          cursor: pointer;
         }
       }
     }
   }
 
-  .bntArea {
-    .button {
-      background: var(--primary);
-      font-weight: 600;
-      font-size: 1rem;
-      padding: 1rem 1.3rem;
-      line-height: 19px;
-      width: 100%;
-      text-align: center;
-      color: white;
-      border: none;
-      cursor: pointer;
-      text-transform: uppercase;
-      padding: 2rem 1.5rem;
+  .quickLink {
+    display: flex;
+    gap: 12px;
+    margin-left: 138px;
+    margin-top: 0.5rem;
+    &Item {
+      display: block;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 150%;
+      color: rgb(128, 128, 137);
+      margin-right: 12px;
+      white-space: nowrap;
+      margin-bottom: 0;
     }
   }
 
@@ -90,14 +144,15 @@
       margin: 0.75rem 2rem;
       display: flex;
       gap: 25px;
-  
+
       .angleLeftIcon {
         align-self: center;
       }
-  
+
       .inpWrapper {
         position: relative;
         width: 100%;
+
         .inpSearch {
           border-bottom: 1px solid var(--gray-400) !important;
           border: none;
@@ -107,13 +162,13 @@
           font-weight: 500;
           font-size: 1rem;
         }
-  
+
         .searchIcon {
           position: absolute;
           right: 0;
           top: 9px;
         }
-  
+
         .closeIcon {
           position: absolute;
           right: 0.25rem;
@@ -229,7 +284,7 @@
 }
 
 .stiky {
-  position: sticky;
+  position: inherit;
 }
 
 .navContainer {
@@ -274,6 +329,7 @@
   .navContainer {
     .nav {
       display: block;
+
       .bntAreaMobile {
         display: block;
         margin-bottom: 1rem;
