@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { FC } from 'react';
-import { angleRightIcon } from '../../public/icons';
+import { angleRightIcon, nextIcon } from '../../public/icons';
 import styles from '../../styles/components/molecules/BreadCrumb.module.scss';
 
 type PropsType = {
@@ -25,7 +25,7 @@ const BreadCrumb: FC<PropsType> = (props) => {
         >
           {firstLayer}
         </span>
-        <span>{angleRightIcon}</span>
+        <span>{nextIcon}</span>
         {secondPath && secondLayer && (
           <>
             <span onClick={() => router.push(secondPath)} onKeyDown={() => router.push(secondPath)} role="presentation">{secondLayer}</span>

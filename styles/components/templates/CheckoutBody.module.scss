@@ -1,0 +1,388 @@
+.checkoutBody {
+  min-height: 800px;
+  padding-bottom: 3rem;
+
+  .mainTitle {
+    padding: 20px 0;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+
+    h4 {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 0px;
+      color: rgb(0, 0, 0);
+      line-height: 28px;
+      text-transform: uppercase;
+      flex-basis: calc(797px);
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-wrap: nowrap;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    gap: 1rem;
+
+    .leftArea {
+      position: relative;
+      margin-bottom: 16px;
+      flex: 1 1 910px;
+
+      .shippingPlan {
+        background-color: white;
+        border-radius: 4px;
+        margin-bottom: 16px;
+        padding: 16px;
+        h3 {
+          font-size: 18px !important;
+          color: rgb(56, 56, 61);
+          font-weight: 700;
+          font-size: 18px;
+          line-height: 24px;
+          margin: 0px;
+        }
+
+        .methodList {
+          margin-top: 1rem;
+          background: rgb(240, 248, 255);
+          border: 1px solid rgb(194, 225, 255);
+          border-radius: 10px;
+          padding: 16px;
+          display: grid;
+          row-gap: 12px;
+          width: 497px;
+          position: relative;
+
+          .radio {
+            width: 18px;
+            height: 18px;
+          }
+          .methodText {
+            font-size: 14px;
+            line-height: 20px;
+            color: rgb(56, 56, 61);
+          }
+
+          .freeMoney {
+            font-size: 13px;
+            line-height: 20px;
+            font-weight: 500;
+            color: rgb(0, 171, 86);
+            padding: 0px 4px;
+            margin-left: 4px;
+          }
+
+          .methodsArrow {
+            z-index: 1;
+            position: absolute;
+            width: 32px;
+            height: 12px;
+            left: 50%;
+            top: 66%;
+            bottom: 18px;
+            transform: translate(-50%, 100%);
+          }
+        }
+
+        .shipment {
+          width: 100%;
+          border-radius: 12px;
+          border: 1px solid rgb(221, 221, 227);
+          margin-top: 3rem;
+          padding: 20px 16px 16px;
+          position: relative;
+          display: flex;
+          z-index: 0;
+          gap: 4rem;
+
+          .packageLeadTimes {
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+            font-size: 14px;
+            line-height: 20px;
+            color: rgb(7, 148, 73);
+            padding: 0px 4px;
+            background-color: rgb(255, 255, 255);
+            position: absolute;
+            top: 0px;
+            left: 12px;
+            transform: translateY(-50%);
+          }
+
+          .leftContent {
+            max-width: 482px;
+
+            .packageSummary {
+              margin: 0.5rem 0;
+              width: 482px;
+              display: flex;
+              -webkit-box-pack: justify;
+              justify-content: space-between;
+              align-items: center;
+
+              .methodText {
+                font-size: 12px;
+                line-height: 16px;
+                color: rgb(56, 56, 61);
+                text-transform: uppercase;
+              }
+
+              .shippingFees {
+                font-size: 14px;
+                line-height: 20px;
+                display: flex;
+                -webkit-box-align: center;
+                align-items: center;
+
+                .originalFee {
+                  color: rgb(128, 128, 137);
+                  text-decoration: line-through;
+                  margin-right: 4px;
+                }
+
+                .currentFee {
+                  color: rgb(56, 56, 61);
+                  font-weight: 500;
+                }
+              }
+            }
+
+            .packageItemList {
+              display: flex;
+              padding: 12px 0px;
+              -webkit-box-align: center;
+              align-items: center;
+              border-top: 1px solid rgb(242, 242, 242);
+
+              .itemInfo {
+                font-size: 14px;
+                line-height: 20px;
+                color: rgb(128, 128, 137);
+                flex: 1 1 0%;
+
+                &ProductName {
+                  display: -webkit-box;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  -webkit-line-clamp: 1;
+                  -webkit-box-orient: vertical;
+                }
+
+                &SecondLine {
+                  display: flex;
+                  justify-content: space-between;
+
+                  .price {
+                    color: rgb(56, 56, 61);
+                    font-weight: 500;
+                  }
+                }
+              }
+            }
+          }
+
+          .rightContent {
+            .fulfillment {
+              display: flex;
+              width: 100%;
+              align-items: flex-start;
+              background: rgb(245, 245, 250);
+              border-radius: 8px;
+              padding: 8px 16px;
+
+              &Text {
+                margin: 0px;
+                font-size: 14px;
+                line-height: 20px;
+                color: rgb(128, 128, 137);
+              }
+            }
+          }
+        }
+      }
+
+      .paymentMethod {
+        background-color: white;
+        border-radius: 4px;
+        margin-bottom: 16px;
+        padding: 16px;
+
+        h3 {
+          color: rgb(56, 56, 61);
+          font-weight: 700;
+          font-size: 18px;
+          line-height: 24px;
+          margin: 0px;
+          font-size: 18px !important;
+        }
+
+        .radio {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+
+    .rightArea {
+      width: 318px;
+
+      .blockAddress {
+        background-color: white;
+        padding: 16px;
+        border-radius: 4px;
+
+        .blockHeader {
+          display: flex;
+          -webkit-box-align: center;
+          align-items: center;
+          -webkit-box-pack: justify;
+          justify-content: space-between;
+          margin-bottom: 12px;
+  
+          &Title {
+            color: rgb(128, 128, 137);
+            font-weight: normal;
+            margin: 0px;
+          }
+  
+          .changeAddress {
+            color: rgb(11, 116, 229);
+            text-decoration: none;
+            font-size: 14px;
+            line-height: 20px;
+          }
+        }
+  
+        .customerInfo {
+          display: flex;
+          -webkit-box-align: center;
+          align-items: center;
+          color: rgb(56, 56, 61);
+          margin-bottom: 2px;
+          font-weight: 600;
+          font-size: 14px;
+          line-height: 20px;
+  
+          &Name {
+            color: rgb(56, 56, 61);
+          }
+  
+          .separate {
+            display: block;
+            width: 1px;
+            height: 20px;
+            background-color: rgb(235, 235, 240);
+            margin: 0px 8px;
+          }
+        }
+  
+        .address {
+          color: rgb(128, 128, 137);
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 20px;
+  
+          .home {
+            color: rgb(0, 171, 86);
+            background-color: rgb(239, 255, 244);
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 16px;
+            padding: 0px 6px;
+            border-radius: 100px;
+            margin-right: 4px;
+            height: 18px;
+            display: inline-flex;
+            -webkit-box-align: center;
+            align-items: center;
+          }
+        }
+      }
+
+      .priceSummary {
+        margin-top: 1rem;
+        background: rgb(255, 255, 255);
+        border-radius: 4px;
+        padding-bottom: 8px;
+        font-family: Roboto,Helvetica,Arial,sans-serif;
+        font-size: 14px;
+
+        .pricesItems {
+          padding: 17px 20px;
+          border-bottom: 1px solid rgb(244, 244, 244);
+
+          .pricesText {
+            color: rgb(128, 128, 137);
+            font-weight: normal;
+            font-size: 16px;
+          }
+
+          .pricesValue {
+            color: black;
+            font-weight: 500;
+          }
+
+          .summaryValuePositive {
+            color: rgb(0, 171, 86);
+          }
+        }
+
+        .pricesTotal {
+          padding: 17px 20px;
+          display: flex;
+          flex-wrap: nowrap;
+          -webkit-box-pack: justify;
+          justify-content: space-between;
+          margin: 0px;
+
+          .pricesText {
+            color: rgb(128, 128, 137);
+            font-weight: normal;
+            font-size: 15px;
+          }
+
+          .pricesContent {
+            text-align: right;
+
+            .pricesFinal {
+              color: rgb(254, 56, 52);
+              font-size: 22px;
+              font-weight: 500;
+              text-align: right;
+            }
+
+            .vat {
+              font-weight: 300;
+              font-style: normal;
+              display: block;
+              font-size: 12px;
+              color: rgb(51, 51, 51);
+              margin-top: 3px;
+            }
+          }
+        }
+      }
+
+      .buyBtn {
+        background: rgb(255, 66, 78);
+        color: rgb(255, 255, 255);
+        padding: 13px 10px;
+        text-align: center;
+        border-radius: 4px;
+        border: none;
+        width: 100%;
+        display: block;
+        cursor: pointer;
+        margin: 15px 0px 0px;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+}

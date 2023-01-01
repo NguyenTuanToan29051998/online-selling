@@ -4,24 +4,19 @@ import Layout from '../../layouts';
 import axios from 'axios';
 import { BannerType } from '@/models/banner';
 import CustomLoading from '../../components/molecules/CustomLoading';
-import ProductBody from '../../components/templates/ProductBody';
+import CartBody from '../../components/templates/CartBody';
 import CustomContainer from '../../components/molecules/CustomContainer';
-import BreadCrumb from '../../components/molecules/BreadCrumb';
-import { useRouter } from 'next/router';
 
-const Product: NextPageWithLayout = () => {
-  const router = useRouter();
-  const { searchInput } = router.query;
+const Cart: NextPageWithLayout = () => {
 
   return (
     <CustomContainer size="medium">
-      <BreadCrumb firstLayer="Trang chủ" lastLayer={searchInput ? searchInput as string : "Sản phẩm"} />
-      <ProductBody />
+      <CartBody />
     </CustomContainer>
   );
 };
 
-Product.getLayout = function getLayout(page: ReactElement) {
+Cart.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout>
       {page}
@@ -29,4 +24,4 @@ Product.getLayout = function getLayout(page: ReactElement) {
   );
 };
 
-export default Product;
+export default Cart;

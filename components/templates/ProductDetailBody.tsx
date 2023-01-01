@@ -54,7 +54,6 @@ const ProductDetailBody: FC<PropTypes> = () => {
                 {starIcon('18', '#fdd836')}
                 {starIcon('18', '#fdd836')}
                 {starIcon('18', '#fdd836')}
-                {starIcon('18', '#fdd836')}
                 {starIcon('18', '#c7c7c7')}
               </div>
               <div className={styles.viewReview}>(Xem 6 đánh giá)</div>

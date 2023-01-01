@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import styles from '../../styles/components/organisms/Header.module.scss';
 import { Menu } from '@/models/menu';
+import { favoriteIcon } from '../../public/icons';
 
 type PropsType = {
   isMasterPage?: boolean,
@@ -17,7 +18,14 @@ const HEADER_HEIGTH = '83px';
 const Header: FC<PropsType> = (props) => {
   const router = useRouter();
   const [scrollDirection, setScrollDirection] = useState<string | null>(null);
-  ;
+  const [inputSearch, setInputSearch] = useState<string>('');
+
+  const handleSearch = (event: any) => {
+    setInputSearch(event.target.value);
+    if (event.key === 'Enter') {
+      router.push(`/product?searchInput=${event.target.value}`);
+    }
+  };
 
   useEffect(() => {
     let lastScrollY = window.pageYOffset;
@@ -41,8 +49,8 @@ const Header: FC<PropsType> = (props) => {
         style={{ top: scrollDirection === 'up' ? '0' : `-${HEADER_HEIGTH}` }}
       >
         <div className={styles.header}>
-          <div className={styles.leftArea} onClick={() => router.push('/home')} role="presentation">
-            <div className={styles.leftAreaMainlogo}>
+          <div className={styles.leftArea}>
+            <div className={styles.leftAreaMainlogo} onClick={() => router.push('/home')} role="presentation">
               <Image
                 src="/assets/logo-tiki.png"
                 width={66}
@@ -53,8 +61,19 @@ const Header: FC<PropsType> = (props) => {
             <div className={styles.formSearch}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img className={styles.iconSearch} src="/assets/img-search.png" alt="icon-search" />
-              <input className={styles.searchInput} placeholder="Bạn tìm gì hôm nay" />
-              <button className={styles.searchBtn}>Tìm kiếm</button>
+              <input
+                className={styles.searchInput}
+                placeholder="Bạn tìm gì hôm nay"
+                value={inputSearch}
+                onKeyDown={(e) => handleSearch(e)}
+                onChange={(e) => handleSearch(e)}
+              />
+              <button
+                className={styles.searchBtn}
+                onClick={() => router.push(`/product?searchInput=${inputSearch}`, undefined, { shallow: true })}
+              >
+                Tìm kiếm
+              </button>
             </div>
           </div>
           <div className={styles.rightArea}>
@@ -78,7 +97,11 @@ const Header: FC<PropsType> = (props) => {
                   height={24}
                 />
               </div>
-              <p className={styles.product}>Sản phẩm</p>
+              <p className={styles.product} onClick={() => router.push('/product')} role="presentation">Sản phẩm</p>
+            </div>
+            <div className={styles.menuItem}>
+              <div>{favoriteIcon}</div>
+              <p className={styles.product} onClick={() => router.push('/product')} role="presentation">Yêu thích</p>
             </div>
             <div className={`${styles.menuItem} me-2`}>
               <div className="d-flex align-items-center">
@@ -93,7 +116,7 @@ const Header: FC<PropsType> = (props) => {
             </div>
               <div className="d-flex align-items-center">
                 <div className={styles.cart}>
-                  <div className={styles.cartIcon}>
+                  <div className={styles.cartIcon} onClick={() => router.push('/cart')} role="presentation">
                     <Image
                       src="/assets/cart.png"
                       alt="header_menu_item_home"
@@ -106,7 +129,7 @@ const Header: FC<PropsType> = (props) => {
           </div>
         </div>
         <div className={styles.quickLink}>
-          <p className={styles.quickLinkItem}>áo ấm nam</p>
+          <p className={styles.quickLinkItem} onClick={() => router.push('/product')} role="presentation">áo ấm nam</p>
           <p className={styles.quickLinkItem}>áo khoác nam</p>
           <p className={styles.quickLinkItem}>áo khoác</p>
           <p className={styles.quickLinkItem}>áo ấm</p>
