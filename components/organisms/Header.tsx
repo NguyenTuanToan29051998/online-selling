@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { FC, useEffect, useState } from 'react';
 import styles from '../../styles/components/organisms/Header.module.scss';
 import { Menu } from '@/models/menu';
-import { favoriteIcon } from '../../public/icons';
+import {  checkGreenIcon1, closeIcon, favoriteGrayIcon } from '../../public/icons';
 
 type PropsType = {
   isMasterPage?: boolean,
@@ -17,6 +17,7 @@ const HEADER_HEIGTH = '83px';
 
 const Header: FC<PropsType> = (props) => {
   const router = useRouter();
+  const { isShowNoti } = router.query;
   const [scrollDirection, setScrollDirection] = useState<string | null>(null);
   const [inputSearch, setInputSearch] = useState<string>('');
 
@@ -40,7 +41,6 @@ const Header: FC<PropsType> = (props) => {
 
     window.addEventListener("scroll", updateScrollDirection, { passive: true });
   }, [scrollDirection]);
-
 
   return (
     <>
@@ -77,7 +77,7 @@ const Header: FC<PropsType> = (props) => {
             </div>
           </div>
           <div className={styles.rightArea}>
-            <div className={styles.menuItem}>
+            <div className={styles.menuItem} onClick={() => router.push('/home')} role="presentation">
               <div className="d-flex align-items-center">
                 <Image
                   src="/assets/home.png"
@@ -86,9 +86,9 @@ const Header: FC<PropsType> = (props) => {
                   height={24}
                 />
               </div>
-              <p className={styles.homeText} onClick={() => router.push('/home')} role="presentation">Trang chủ</p>
+              <p className={styles.homeText}>Trang chủ</p>
             </div>
-            <div className={styles.menuItem}>
+            <div className={styles.menuItem} onClick={() => router.push('/product')} role="presentation">
               <div className="d-flex align-items-center">
                 <Image
                   src="/assets/product.png"
@@ -97,11 +97,11 @@ const Header: FC<PropsType> = (props) => {
                   height={24}
                 />
               </div>
-              <p className={styles.product} onClick={() => router.push('/product')} role="presentation">Sản phẩm</p>
+              <p className={styles.product}>Sản phẩm</p>
             </div>
-            <div className={styles.menuItem}>
-              <div>{favoriteIcon}</div>
-              <p className={styles.product} onClick={() => router.push('/product')} role="presentation">Yêu thích</p>
+            <div className={styles.menuItem} onClick={() => router.push('/favorite')} role="presentation">
+              <div>{favoriteGrayIcon}</div>
+              <p className={styles.product}>Yêu thích</p>
             </div>
             <div className={`${styles.menuItem} me-2`}>
               <div className="d-flex align-items-center">
@@ -123,6 +123,14 @@ const Header: FC<PropsType> = (props) => {
                       width={24}
                       height={24}
                     />
+                  </div>
+                  <div className={isShowNoti === 'true' ? `${styles.cartNotification}` : `${styles.hiddenBtnViewCart}`}>
+                    <div className={styles.btnClose} onClick={() => router.push(`/product/${router.query.id}?isShowNoti=false`)} role="presentation">{closeIcon}</div>
+                    <div className={styles.status}>
+                      {checkGreenIcon1}
+                      Thêm vào giỏ hàng thành công!
+                    </div>
+                    <div className={styles.btnViewCart} onClick={() => router.push('/cart?isShowNoti=false')} role="presentation">Xem giỏ hàng và thanh toán</div>
                   </div>
                 </div>
               </div>

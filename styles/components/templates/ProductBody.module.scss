@@ -186,12 +186,19 @@
             height: 16px;
             background-size: contain;
             border-top-left-radius: 4px;
+            position: absolute;
           }
 
           .thumbnail {
             width: 200px;
             height: 200px;
             background-size: contain;
+          }
+
+          .addToFavorites {
+            position: absolute;
+            top: 3px;
+            right: 6px;
           }
 
           .info {

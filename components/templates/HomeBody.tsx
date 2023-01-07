@@ -6,7 +6,7 @@ import BackToTop from '../atoms/buttons/BackToTop';
 import styles from '../../styles/components/templates/HomeBody.module.scss';
 import CustomContainer from '../molecules/CustomContainer';
 import Image from 'next/image';
-import { starIcon } from '../../public/icons';
+import { favoriteGrayIcon, starIcon } from '../../public/icons';
 import PaginationSection from '../organisms/PaginationSection';
 
 type PropTypes = {
@@ -122,7 +122,7 @@ const HomeBody: FC<PropTypes> = () => {
 
             <div className={styles.highlights}>
               <div className={styles.highlightsTitle}>
-                <div>Bộ sưu tập nổi bật</div>
+                <div>Sản phẩm nổi bật</div>
               </div>
               <div className={`row ${styles.highlightsList}`}>
                 <div className={`col-2`}>
@@ -221,9 +221,10 @@ const HomeBody: FC<PropTypes> = () => {
                 {[...Array(24)].map(item => (
                   <>
                     <div className={styles.productItem} onClick={() => router.push('/product/1')} role="presentation">
-                      <div>
+                      <div className="position-relative">
                         <div className={styles.official} style={{ backgroundImage: `url("/assets/brand-2.jpg")` }} />
                         <div className={styles.thumbnail} style={{ backgroundImage: `url("/assets/product-1.jpg")` }} />
+                        <div className={styles.addToFavorites}>{favoriteGrayIcon}</div>
                       </div>
                       <div className={styles.info}>
                         <div className={styles.name}>
@@ -241,19 +242,19 @@ const HomeBody: FC<PropTypes> = () => {
                           <div className="price-discount__price">439.000 ₫</div>
                           <div className="price-discount__discount">-51%</div>
                         </div>
-                        <div className={styles.badgeUnderPrice}>Tặng tới 1000 ASA (224k ₫) <br />≈ 1.0% hoàn tiền</div>
+                        {/* <div className={styles.badgeUnderPrice}>Tặng tới 1000 ASA (224k ₫) <br />≈ 1.0% hoàn tiền</div> */}
                         <div className={styles.badgeUnderRating}>
                           <div className={styles.item}>
                             <span>Freeship+</span>
                           </div>
-                          <div className={styles.item}>
+                          {/* <div className={styles.item}>
                             <span>Trả góp</span>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
-                      <div className={styles.badgeDelivery}>
+                      {/* <div className={styles.badgeDelivery}>
                         <span>Giao thứ 3, ngày 03/01</span>
-                      </div>
+                      </div> */}
                     </div>
                   </>
                 ))}

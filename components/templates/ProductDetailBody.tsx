@@ -14,8 +14,12 @@ const ProductDetailBody: FC<PropTypes> = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(5);
 
-  useEffect(() => {
+  const handleAddToCart = () => {
+    router.push('/product/1?isShowNoti=true');
+  };
 
+  useEffect(() => {
+    router.push(`/product/${router.query.id}?isShowNoti=false`);
   }, []);
 
   return (
@@ -171,7 +175,7 @@ const ProductDetailBody: FC<PropTypes> = () => {
                       <div className={`${styles.addCart} ${styles.disable}`}>{addIcon}</div>
                     </div>
                   </div>
-                  <div className={styles.btnAddToCart}>Chọn mua</div>
+                  <div className={styles.btnAddToCart} onClick={() => handleAddToCart()} role="presentation">Chọn mua</div>
                 </div>
               </div>
             </div>
@@ -225,32 +229,30 @@ const ProductDetailBody: FC<PropTypes> = () => {
       <div className={styles.sameProduct}>
         <div className={styles.title}>Sản Phẩm Tương Tự</div>
         <div className={styles.productList}>
-          {[...Array(6)].map(item => (
-            <>
-              <div className={styles.productItem} onClick={() => router.push('/product/1')} role="presentation">
-                <div>
-                  <div className={styles.official} style={{ backgroundImage: `url("/assets/brand-2.jpg")` }} />
-                  <div className={styles.thumbnail} style={{ backgroundImage: `url("/assets/product-1.jpg")` }} />
+          {[...Array(6)].map((item, index) => (
+            <div key={index} className={styles.productItem} onClick={() => router.push('/product/1')} role="presentation">
+              <div>
+                <div className={styles.official} style={{ backgroundImage: `url("/assets/brand-2.jpg")` }} />
+                <div className={styles.thumbnail} style={{ backgroundImage: `url("/assets/product-1.jpg")` }} />
+              </div>
+              <div className={styles.info}>
+                <div className={`${styles.priceDiscount} ${styles.hasDiscount}`}>
+                  <div className="price-discount__price">439.000 ₫</div>
+                  <div className="price-discount__discount">-51%</div>
                 </div>
-                <div className={styles.info}>
-                  <div className={`${styles.priceDiscount} ${styles.hasDiscount}`}>
-                    <div className="price-discount__price">439.000 ₫</div>
-                    <div className="price-discount__discount">-51%</div>
+                <div className={styles.name}>
+                  <h3>Áo Khoác Gió Thể Thao Nam 5S INSPIRATION (4 Màu), Công Nghệ Cao Cấp, Chống Thấm, Cản Bụi, Cản Gió Cực Ấm (AKG22001)</h3>
+                </div>
+                <div className="d-flex gap-2">
+                  <div className={styles.fullRating}>
+                    <span className={styles.point}>4.2</span>
+                    <div className="d-flex">{starIcon('14', '#fdd836')}</div>
                   </div>
-                  <div className={styles.name}>
-                    <h3>Áo Khoác Gió Thể Thao Nam 5S INSPIRATION (4 Màu), Công Nghệ Cao Cấp, Chống Thấm, Cản Bụi, Cản Gió Cực Ấm (AKG22001)</h3>
-                  </div>
-                  <div className="d-flex gap-2">
-                    <div className={styles.fullRating}>
-                      <span className={styles.point}>4.2</span>
-                      <div className="d-flex">{starIcon('14', '#fdd836')}</div>
-                    </div>
-                    <div className={styles.bisectingLine} />
-                    <span className={styles.quantity}>Đã bán 20</span>
-                  </div>
+                  <div className={styles.bisectingLine} />
+                  <span className={styles.quantity}>Đã bán 20</span>
                 </div>
               </div>
-            </>
+            </div>
           ))}
         </div>
       </div>
@@ -325,11 +327,11 @@ const ProductDetailBody: FC<PropTypes> = () => {
                 <div className={styles.point}>4.4</div>
                 <div>
                   <div className="d-flex">
-                    {starIcon('18', '#fdd836')}
-                    {starIcon('18', '#fdd836')}
-                    {starIcon('18', '#fdd836')}
-                    {starIcon('18', '#fdd836')}
-                    {starIcon('18', '#c7c7c7')}
+                    {starIcon('24', '#fdd836')}
+                    {starIcon('24', '#fdd836')}
+                    {starIcon('24', '#fdd836')}
+                    {starIcon('24', '#fdd836')}
+                    {starIcon('24', '#c7c7c7')}
                   </div>
                   <div className={styles.reviewTotal}>16 nhận xét</div>
                 </div>

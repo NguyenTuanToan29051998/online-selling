@@ -57,7 +57,7 @@ const PaginationSection: NextPage<PropType> = (props) => {
 
   return (
     <>
-      {pageCount > 0 && (
+      {pageCount > 1 && (
         <div className={styles.pagearea}>
           {pageItems[0] !== 0 && currentPage !== 0 && (
             <>

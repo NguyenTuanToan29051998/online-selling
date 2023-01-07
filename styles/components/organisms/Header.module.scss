@@ -114,9 +114,73 @@
       .cart {
         padding-left: 1.25rem;
         border-left: 2px solid #ebebf0;
+        position: relative;
+
         .cartIcon {
           display: flex;
           cursor: pointer;
+        }
+
+        .cartNotification {
+          position: absolute;
+          bottom: -15px;
+          right: 0px;
+          padding: 16px;
+          transform: translateY(100%);
+          background-color: rgb(255, 255, 255);
+          border-radius: 6px;
+          box-shadow: rgb(179 179 179) 1px 1px 15px;
+
+          &::before {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            right: 15px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: transparent transparent rgb(255, 255, 255);
+            border-image: initial;
+          }
+
+          .btnClose {
+            cursor: pointer;
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            padding: 4px;
+            color: rgb(155, 155, 155);
+            font-size: 11px;
+          }
+
+          .status {
+            display: flex;
+            gap: 0.5rem;
+            -webkit-box-align: center;
+            align-items: center;
+            margin: 0px;
+            color: rgb(51, 51, 51);
+            font-size: 13px;
+            white-space: nowrap;
+          }
+
+          .btnViewCart {
+            display: block;
+            margin-top: 16px;
+            padding: 10px 0px;
+            width: 240px;
+            color: rgb(255, 255, 255);
+            font-size: 14px;
+            font-weight: 400;
+            text-align: center;
+            white-space: nowrap;
+            background-color: rgb(255, 57, 69);
+            border-radius: 4px;
+            cursor: pointer;
+          }
+        }
+
+        .hiddenBtnViewCart {
+          display: none;
         }
       }
     }
@@ -137,149 +201,6 @@
       white-space: nowrap;
       margin-bottom: 0;
       cursor: pointer;
-    }
-  }
-
-  @media (max-width: 1070px) {
-    .search {
-      margin: 0.75rem 2rem;
-      display: flex;
-      gap: 25px;
-
-      .angleLeftIcon {
-        align-self: center;
-      }
-
-      .inpWrapper {
-        position: relative;
-        width: 100%;
-
-        .inpSearch {
-          border-bottom: 1px solid var(--gray-400) !important;
-          border: none;
-          width: 100%;
-          padding: 9px 40px 9px 0;
-          outline: none;
-          font-weight: 500;
-          font-size: 1rem;
-        }
-
-        .searchIcon {
-          position: absolute;
-          right: 0;
-          top: 9px;
-        }
-
-        .closeIcon {
-          position: absolute;
-          right: 0.25rem;
-          top: 9px;
-        }
-      }
-    }
-
-    .header {
-      .rightArea {
-        .talkToUs {
-          display: none;
-        }
-
-        .searchIcon {
-          display: block;
-          margin-right: 1rem;
-        }
-
-        .messageIcon {
-          width: 1.5rem;
-          height: 1.5rem;
-        }
-
-        .flg {
-          display: none;
-        }
-      }
-    }
-  }
-
-  @media (max-width: 880px) {
-    .header {
-      gap: 3rem;
-      padding: 1rem 5rem;
-
-      .leftArea {
-        align-items: center;
-      }
-
-      .rightArea {
-        .bntArea {
-          margin-top: 1.25rem;
-          padding: 0 6.25rem;
-          display: none;
-        }
-
-        .hamburgerArea {
-          display: block;
-        }
-      }
-    }
-  }
-
-  @media (max-width: 768px) {
-    .header {
-      gap: 1rem;
-      padding: 1rem 3rem;
-
-      .leftArea {
-        align-items: center;
-
-        &Sublogo {
-          max-width: 200px;
-        }
-
-        .barsIcon {
-          display: block;
-          margin-right: 0.5rem;
-        }
-      }
-
-      .rightArea {
-        .bntArea {
-          margin-top: 1.25rem;
-          padding: 0 5rem;
-          display: none;
-        }
-      }
-    }
-  }
-
-  @media (max-width: 610px) {
-    .header {
-      padding: 1rem;
-
-      .leftArea {
-        align-items: center;
-
-        .barsIcon {
-          display: block;
-          margin-right: 0.5rem;
-        }
-
-        &Mainlogo {
-          margin-right: 0.5rem;
-        }
-      }
-
-      .rightArea {
-        .talkToUs {
-          display: none;
-        }
-
-        .bntArea {
-          margin-top: 1.25rem;
-          padding: 0 1.25rem;
-          display: none;
-        }
-      }
     }
   }
 }
@@ -321,19 +242,6 @@
         cursor: pointer;
         text-transform: uppercase;
         padding: 1.25rem 1.5rem;
-      }
-    }
-  }
-}
-
-@media (max-width: 880px) {
-  .navContainer {
-    .nav {
-      display: block;
-
-      .bntAreaMobile {
-        display: block;
-        margin-bottom: 1rem;
       }
     }
   }

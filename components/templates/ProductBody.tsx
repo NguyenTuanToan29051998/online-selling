@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, MouseEvent } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../styles/components/templates/ProductBody.module.scss';
-import { starIcon } from '../../public/icons';
+import { favoriteGrayIcon, favoriteIcon, favoriteRedIcon, starIcon } from '../../public/icons';
 import PaginationSection from '../organisms/PaginationSection';
 
 type PropTypes = {
@@ -15,6 +15,13 @@ const ProductBody: FC<PropTypes> = () => {
   const searchText = ''.toString().concat('`', searchInput as string, '`');
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(5);
+  const [numberSelected, setNumberSelected] = useState<number>(0);
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+
+  const handleAddToFavorite = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    setIsFavorite(!isFavorite);
+  };
 
   useEffect(() => {
     console.log('xxxxxxxxxx');
@@ -126,63 +133,88 @@ const ProductBody: FC<PropTypes> = () => {
             <div className={styles.inputSearch}>{searchInput ? `Kết quả tìm kiếm cho ${searchText}`: "Tất cả sản phẩm"}</div>
             <div className={styles.sorter}>
               <div>
-                <div className={`${styles.sorterItem} ${styles.isSelected}`}>Phổ biến</div>
-                <div className={styles.underlined}></div>
+                <div
+                  className={`${styles.sorterItem} ${numberSelected === 0 ? `${styles.isSelected}` : ""}`}
+                  onClick={() => setNumberSelected(0)}
+                  role="presentation"
+                >
+                  Phổ biến
+                </div>
+                {numberSelected === 0 && <div className={styles.underlined} />}
               </div>
               <div>
-                <div className={styles.sorterItem}>Bán chạy</div>
-                {/* <div className={styles.underlined}></div> */}
+                <div
+                  className={`${styles.sorterItem} ${numberSelected === 1 ? `${styles.isSelected}` : ""}`}
+                  onClick={() => setNumberSelected(1)}
+                  role="presentation"
+                >
+                  Bán Chạy
+                </div>
+                {numberSelected === 1 && <div className={styles.underlined} />}
               </div>
               <div>
-                <div className={styles.sorterItem}>Giá thấp đến cao</div>
-                {/* <div className={styles.underlined}></div> */}
+                <div
+                  className={`${styles.sorterItem} ${numberSelected === 2 ? `${styles.isSelected}` : ""}`}
+                  onClick={() => setNumberSelected(2)}
+                  role="presentation"
+                >
+                  Giá Thấp Đến Cao
+                </div>
+                {numberSelected === 2 && <div className={styles.underlined} />}
               </div>
               <div>
-                <div className={styles.sorterItem}>Giá cao đến thấp</div>
-                {/* <div className={styles.underlined}></div> */}
+                <div
+                  className={`${styles.sorterItem} ${numberSelected === 3 ? `${styles.isSelected}` : ""}`}
+                  onClick={() => setNumberSelected(3)}
+                  role="presentation"
+                >
+                  Giá Cao Đến Thấp
+                </div>
+                {numberSelected === 3 && <div className={styles.underlined} />}
               </div>
             </div>
           </div>
 
           <div className={styles.productList}>
             {[...Array(24)].map(item => (
-              <>
-                <div className={styles.productItem} onClick={() => router.push('/product/1')} role="presentation">
-                  <div>
-                    <div className={styles.official} style={{ backgroundImage: `url("/assets/brand-2.jpg")` }} />
-                    <div className={styles.thumbnail} style={{ backgroundImage: `url("/assets/product-1.jpg")` }} />
-                  </div>
-                  <div className={styles.info}>
-                    <div className={styles.name}>
-                      <h3>Áo Khoác Gió Thể Thao Nam 5S INSPIRATION (4 Màu), Công Nghệ Cao Cấp, Chống Thấm, Cản Bụi, Cản Gió Cực Ấm (AKG22001)</h3>
-                    </div>
-                    <div className="d-flex gap-2">
-                      <div className={styles.fullRating}>
-                        <span className={styles.point}>4.2</span>
-                        <div className="d-flex">{starIcon('14', '#fdd836')}</div>
-                      </div>
-                      <div className={styles.bisectingLine} />
-                      <span className={styles.quantity}>Đã bán 20</span>
-                    </div>
-                    <div className={`${styles.priceDiscount} ${styles.hasDiscount}`}>
-                      <div className="price-discount__price">439.000 ₫</div>
-                      <div className="price-discount__discount">-51%</div>
-                    </div>
-                    <div className={styles.badgeUnderPrice}>Tặng tới 1000 ASA (224k ₫) <br />≈ 1.0% hoàn tiền</div>
-                    <div className={styles.badgeUnderRating}>
-                      <div className={styles.item}>
-                        <span>Freeship+</span>
-                      </div>
-                      <div className={styles.item}>
-                        <span>Trả góp</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.badgeDelivery}>
-                    <span>Giao thứ 3, ngày 03/01</span>
+              <div className={styles.productItem} onClick={() => router.push('/product/1')} role="presentation" key={Math.random()}>
+                <div className="position-relative">
+                  <div className={styles.official} style={{ backgroundImage: `url("/assets/brand-2.jpg")` }} />
+                  <div className={styles.thumbnail} style={{ backgroundImage: `url("/assets/product-1.jpg")` }} />
+                  <div className={styles.addToFavorites} onClick={(e) => handleAddToFavorite(e)} role="presentation">
+                    {isFavorite ? favoriteRedIcon : favoriteGrayIcon}
                   </div>
                 </div>
-              </>
+                <div className={styles.info}>
+                  <div className={styles.name}>
+                    <h3>Áo Khoác Gió Thể Thao Nam 5S INSPIRATION (4 Màu), Công Nghệ Cao Cấp, Chống Thấm, Cản Bụi, Cản Gió Cực Ấm (AKG22001)</h3>
+                  </div>
+                  <div className="d-flex gap-2">
+                    <div className={styles.fullRating}>
+                      <span className={styles.point}>4.2</span>
+                      <div className="d-flex">{starIcon('14', '#fdd836')}</div>
+                    </div>
+                    <div className={styles.bisectingLine} />
+                    <span className={styles.quantity}>Đã bán 20</span>
+                  </div>
+                  <div className={`${styles.priceDiscount} ${styles.hasDiscount}`}>
+                    <div className="price-discount__price">439.000 ₫</div>
+                    <div className="price-discount__discount">-51%</div>
+                  </div>
+                  <div className={styles.badgeUnderPrice}>Tặng tới 1000 ASA (224k ₫) <br />≈ 1.0% hoàn tiền</div>
+                  <div className={styles.badgeUnderRating}>
+                    <div className={styles.item}>
+                      <span>Freeship+</span>
+                    </div>
+                    <div className={styles.item}>
+                      <span>Trả góp</span>
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.badgeDelivery}>
+                  <span>Giao thứ 3, ngày 03/01</span>
+                </div>
+              </div>
             ))}
           </div>
         </div>

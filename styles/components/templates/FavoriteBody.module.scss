@@ -1,0 +1,172 @@
+.favoriteBody {
+  min-height: 800px;
+  padding-bottom: 3rem;
+
+  .mainTitle {
+    padding: 20px 0;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+
+    h4 {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 0px;
+      color: rgb(0, 0, 0);
+      line-height: 28px;
+      text-transform: uppercase;
+      flex-basis: calc(797px);
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-wrap: nowrap;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    gap: 1rem;
+    border-radius: 4px;
+
+    .productList {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.5rem;
+
+      .productItem {
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        background: rgb(255, 255, 255);
+        border-radius: 4px;
+        &:hover {
+          box-shadow: rgb(0 0 0 / 10%) 0px 0px 20px;
+        }
+
+        .official {
+          width: 70px;
+          height: 16px;
+          background-size: contain;
+          border-top-left-radius: 4px;
+          position: absolute;
+        }
+
+        .thumbnail {
+          width: 200px;
+          height: 200px;
+          background-size: contain;
+        }
+
+        .addToFavorites {
+          position: absolute;
+          top: 3px;
+          right: 6px;
+        }
+
+        .info {
+          padding: 8px 0px;
+          border-bottom: 1px solid rgb(235, 235, 240);
+          margin: 0px 12px;
+
+          .name {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            min-height: 36px;
+
+            h3 {
+              font-weight: 400;
+              font-size: 12px;
+              line-height: 150%;
+              color: rgb(39, 39, 42);
+              margin: 0px;
+              word-break: break-word;
+            }
+          }
+
+          .fullRating {
+            display: flex;
+            align-items: center;
+
+            .point {
+              font-weight: 400;
+              font-size: 12px;
+              line-height: 150%;
+              color: rgb(128, 128, 137);
+            }
+          }
+
+          .bisectingLine {
+            display: flex;
+            align-self: center;
+            width: 1px;
+            height: 9px;
+            background-color: #c7c7c7;
+          }
+
+          .quantity {
+            color: rgb(128, 128, 137);
+            line-height: 150%;
+            font-size: 12px;
+            // padding-left: 6px;
+            // border-left: 1px solid #ebebf0;
+          }
+
+          .priceDiscount {
+            text-align: left;
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 500;
+            margin-top: 6px;
+            color: rgb(56, 56, 61);
+            display: flex;
+            gap: 0.5rem;
+            -webkit-box-align: center;
+            align-items: center;
+          }
+
+          .hasDiscount {
+            color: #ff424e;
+          }
+
+          .badgeUnderPrice {
+            color: rgb(128, 128, 137);
+            font-weight: 400;
+            font-size: 10px;
+            line-height: 150%;
+            min-height: 30px;
+          }
+
+          .badgeUnderRating {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+            min-height: 17px;
+
+            .item {
+              padding: 2px 4px;
+              border: 0.5px solid rgb(10, 104, 255);
+              border-radius: 2px;
+              font-weight: 400;
+              font-size: 12px;
+              line-height: 12px;
+              color: rgb(10, 104, 255);
+            }
+          }
+        }
+
+        .badgeDelivery {
+          display: flex;
+          padding: 8px 12px;
+          gap: 4px;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 16px;
+          color: rgb(128, 128, 137);
+        }
+      }
+    }
+    
+  }
+}
