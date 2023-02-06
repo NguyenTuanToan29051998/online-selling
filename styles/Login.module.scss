@@ -1,0 +1,156 @@
+.loginBody {
+  body {
+    padding-top: 4.2rem;
+    padding-bottom: 4.2rem;
+    background: rgba(0, 0, 0, 0.76);
+  }
+  
+  a {
+    text-decoration: none !important;
+    color: #007bff;
+  
+    &:hover {
+      color: #0056b3;
+    }
+  }
+  
+  h1,
+  h2,
+  h3 {
+    font-family: 'Kaushan Script', cursive;
+  }
+  
+  .formGroup {
+    margin-bottom: 1rem;
+  
+    label {
+      margin-bottom: 0.5rem;
+    }
+  
+    .formControl {
+      display: block;
+      width: 100%;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  
+      &:focus {
+        color: #495057;
+        background-color: #fff;
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+      }
+    }
+  }
+
+  .btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+  
+  .btnBlock {
+    display: block;
+    width: 100%;
+  
+    &:hover {
+      color: #fff;
+      background-color: #0069d9;
+      border-color: #0062cc;
+    }
+  }
+  
+  .myform {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 1rem;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 1.1rem;
+    outline: 0;
+    max-width: 445px;
+    margin: 0 auto;
+  }
+  
+  .txTfm {
+    text-transform: uppercase;
+  }
+  
+  .mybtn {
+    border-radius: 50px;
+  }
+  
+  .btnPrimary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .loginOr {
+    position: relative;
+    color: #aaa;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  
+  .spanOr {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: -2px;
+    margin-left: -25px;
+    background-color: #fff;
+    width: 50px;
+    text-align: center;
+  }
+  
+  .hrOr {
+    height: 1px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+  }
+  
+  .google {
+    color: #666;
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    outline: none;
+    border: 1px solid lightgrey;
+  }
+  
+  form .error {
+    color: #ff0000;
+  }
+  
+  #second {
+    display: none;
+  }
+}

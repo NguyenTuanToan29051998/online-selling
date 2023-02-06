@@ -21,8 +21,14 @@ const Header: FC<PropsType> = (props) => {
   const [scrollDirection, setScrollDirection] = useState<string | null>(null);
   const [inputSearch, setInputSearch] = useState<string>('');
 
+  let userInfo: { id: string; };
+  if (typeof window !== 'undefined') {
+    userInfo = JSON.parse(localStorage.getItem('user-info') || '[]');
+  };
+
   const handleSearch = (event: any) => {
     setInputSearch(event.target.value);
+    if(!event.target.value.trim()) return;
     if (event.key === 'Enter') {
       router.push(`/product?searchInput=${event.target.value}`);
     }
@@ -70,7 +76,7 @@ const Header: FC<PropsType> = (props) => {
               />
               <button
                 className={styles.searchBtn}
-                onClick={() => router.push(`/product?searchInput=${inputSearch}`, undefined, { shallow: true })}
+                onClick={() => router.push(`${!inputSearch.trim() ? '' : `/product?searchInput=${inputSearch}`}`, undefined, { shallow: true })}
               >
                 Tìm kiếm
               </button>
@@ -103,7 +109,7 @@ const Header: FC<PropsType> = (props) => {
               <div>{favoriteGrayIcon}</div>
               <p className={styles.product}>Yêu thích</p>
             </div>
-            <div className={`${styles.menuItem} me-2`}>
+            <div className={`${styles.menuItem} me-2`} onClick={() => router.push('/')} role="presentation">
               <div className="d-flex align-items-center">
                 <Image
                   src="/assets/user.png"
@@ -116,7 +122,7 @@ const Header: FC<PropsType> = (props) => {
             </div>
               <div className="d-flex align-items-center">
                 <div className={styles.cart}>
-                  <div className={styles.cartIcon} onClick={() => router.push('/cart')} role="presentation">
+                  <div className={styles.cartIcon} onClick={() => router.push(`${!userInfo.id ? '/' : '/cart'}`)} role="presentation">
                     <Image
                       src="/assets/cart.png"
                       alt="header_menu_item_home"

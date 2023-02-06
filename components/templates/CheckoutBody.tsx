@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import styles from '../../styles/components/templates/CheckoutBody.module.scss';
 import Image from 'next/image';
 import { addIcon, deleteIcon, fulfillmentIcon, methodIcon, removeIcon } from '../../public/icons';
+import CustomModal from '../organisms/CustomModal';
 
 type PropTypes = {
 
@@ -13,6 +14,7 @@ const CheckoutBody: FC<PropTypes> = () => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(5);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   useEffect(() => {
 
@@ -183,9 +185,13 @@ const CheckoutBody: FC<PropTypes> = () => {
               </div>
             </div>
           </div>
-          <div className={styles.buyBtn}>Thanh toán</div>
+          <div className={styles.buyBtn} onClick={() => setShowModal(true)} role="presentation">Thanh toán</div>
         </div>
       </div>
+      <CustomModal title="xxxxxxx" show={showModal} setShow={setShowModal}>
+        <p className={styles.modalDecs}>lllllllllllllll</p>
+        kkkkkkkkkkkkkkkkkk
+      </CustomModal>
     </div>
   );
 };

@@ -23,11 +23,11 @@
         gap: 0.5rem;
 
         .item {
-
           width: 64px;
           height: 64px;
           cursor: pointer;
           border-radius: 4px;
+          background-size: cover;
         }
 
         .selectedItem {
@@ -202,6 +202,7 @@
                   outline: 0px;
                   border-radius: 4px;
                   cursor: pointer;
+                  min-width: 150px;
 
                   &:hover {
                     border: 1px solid rgb(13, 92, 182);
@@ -221,6 +222,11 @@
                     margin: 6px 8px;
                     overflow-wrap: anywhere;
                   }
+                }
+
+                .isSelected {
+                  border: 1px solid rgb(13, 92, 182) !important;
+                  background-color: rgb(229, 242, 255) !important;
                 }
 
                 .selectSizeItem {

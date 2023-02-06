@@ -4,23 +4,58 @@ import styles from '../../styles/components/templates/ProductDetailBody.module.s
 import Image from 'next/image';
 import { addIcon, angleRightIcon, checkGreenIcon, indicatorIcon, removeIcon, starIcon } from '../../public/icons';
 import PaginationSection from '../organisms/PaginationSection';
+import { ProductDetailType } from '@/models/product';
+import { ProductDetailApiManagement } from '../../api-clients/product-detail';
+import { CartApiManagement } from '../../api-clients/cart';
+import useFormat from '../../hooks/useFormat';
 
 type PropTypes = {
-
+  product: ProductDetailType;
 };
 
-const ProductDetailBody: FC<PropTypes> = () => {
+const ProductDetailBody: FC<PropTypes> = (props) => {
+  const { product } = props;
   const router = useRouter();
+  const {formatNumberWithDot} = useFormat();
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(5);
+  const [selectedColor, setSelectedColor] = useState<string>(product.colors[0].color);
+  const [isSelectedColor, setIsSelectedColor] = useState<boolean>(true);
+  const [isSelectedSize, setIsSelectedSize] = useState<boolean>(false);
+  const [selectedSize, setSelectedSize] = useState<string>(product.colors[0].relatedSizes[0].size);
+  const [quantityProduct, setQuantityProduct] = useState<number>(1);
+  const [availableQuantity, setAvailableQuantity] = useState<number>(0);
+  const [selectedImage, setSelectedimage] = useState<string>(product.colors[0].image);
+
+  let userInfo: { id: string; };
+  if (typeof window !== 'undefined') {
+    userInfo = JSON.parse(localStorage.getItem('user-info') || '[]');
+  };
 
   const handleAddToCart = () => {
+    if (!userInfo.id) {
+      return router.push('/');
+    }
+    CartApiManagement.addProductToCart(userInfo.id, selectedColor, selectedSize, product.product.product.id, quantityProduct).then(res => {
+    }).catch(err => console.log(err));
     router.push('/product/1?isShowNoti=true');
+  };
+  const handleSelectedSize = (size: string) => {
+    setSelectedSize(size);
+    setIsSelectedColor(false);
+    setIsSelectedSize(true);
   };
 
   useEffect(() => {
     router.push(`/product/${router.query.id}?isShowNoti=false`);
   }, []);
+
+  useEffect(() => {
+    if (!userInfo) return;
+    ProductDetailApiManagement.getNumberProduct(userInfo.id, selectedColor, selectedSize).then(res => {
+      setAvailableQuantity(res.data);
+    }).catch(err => console.log(err));
+  }, [selectedColor, selectedSize]);
 
   return (
     <div className={styles.wrapper}>
@@ -29,20 +64,23 @@ const ProductDetailBody: FC<PropTypes> = () => {
           <div className={styles.groupImage}>
             <div className="d-flex">
               <Image
-                src="/assets/product-detail-1.jpg"
+                src={`/assets/${selectedImage}`}
                 width={444}
-                height={444}
+                height={650}
                 alt="product-detail"
               />
             </div>
           </div>
           <div className={styles.reviewImages}>
-            <div className={`${styles.item} ${styles.selectedItem}`} style={{ backgroundImage: `url("/assets/product-detail-1.2.jpg")` }} />
-            <div className={styles.item} style={{ backgroundImage: `url("/assets/product-detail-1.1.jpg")` }} />
-            <div className={styles.item} style={{ backgroundImage: `url("/assets/product-detail-1.2.jpg")` }} />
-            <div className={styles.item} style={{ backgroundImage: `url("/assets/product-detail-1.1.jpg")` }} />
-            <div className={styles.item} style={{ backgroundImage: `url("/assets/product-detail-1.2.jpg")` }} />
-            <div className={styles.item} style={{ backgroundImage: `url("/assets/product-detail-1.1.jpg")` }} />
+            {product.colors.map((item, index) => (
+              <div
+                key={index}
+                className={`${styles.item} ${item.image === selectedImage && styles.selectedItem}`}
+                style={{ backgroundImage: `url("/assets/${item.image}")` }}
+                onClick={() => setSelectedimage(item.image)}
+                role="presentation"
+              />
+            ))}
           </div>
         </div>
         <div className={styles.separate} />
@@ -68,8 +106,8 @@ const ProductDetailBody: FC<PropTypes> = () => {
           <div className={styles.body}>
             <div className={styles.left}>
               <div className={`${styles.productPrice} ${styles.hasDiscount}`}>
-                <div className={styles.currentPrice}>439.000 ₫</div>
-                <div className={styles.cost}>889.000 ₫</div>
+                <div className={styles.currentPrice}>{formatNumberWithDot(product.product.newPrice)} ₫</div>
+                <div className={styles.cost}>{formatNumberWithDot(product.product.product.price)} ₫</div>
                 <div className={styles.discountRate}>-51%</div>
               </div>
               <div className={styles.category}>
@@ -81,34 +119,58 @@ const ProductDetailBody: FC<PropTypes> = () => {
                   <span className={styles.title}>Màu sắc: </span>
                   <span className={styles.name}>AKG22001CHI</span>
                   <div className={styles.optionColor}>
-                    {[...Array(10)].map((item, index) => (
-                      <div key={index} className="position-relative">
-                        <div className={styles.selectItem}>
-                          <div className="d-flex">
-                            <Image
-                              src="/assets/product-detail-1.jpg"
-                              width={50}
-                              height={50}
-                              alt="product-detail"
-                            />
+                    {(isSelectedSize ? product.sizes.filter(x => x.size === selectedSize)[0].relatedColors : product.colors || []).map((item, index) => {
+                      return (
+                        <div key={index} className="position-relative">
+                          <div
+                            className={`${styles.selectItem} ${selectedColor === item.color && styles.isSelected}`}
+                            onClick={() => setSelectedColor(item.color)}
+                            role="presentation"
+                          >
+                            <div className="d-flex">
+                              <Image
+                                src={`/assets/${item.image}`}
+                                width={45}
+                                height={50}
+                                alt="product-detail"
+                              />
+                              {/* <div className={styles.item} style={{ backgroundImage: `url("/assets/${item.image}"` }} /> */}
+                            </div>
+                            <div className={styles.optionLabel}>{item.color}</div>
                           </div>
-                          <div className={styles.optionLabel}>AKG22001CHI</div>
+                          {selectedColor === item.color && (
+                            <div className={styles.indicator}>{indicatorIcon}</div>
+                          )}
                         </div>
-                        <div className={styles.indicator}>{indicatorIcon}</div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
                 <div className={styles.productColor}>
                   <span className={styles.title}>Kích cỡ: </span>
                   <span className={styles.name}>S</span>
                   <div className={styles.optionColor}>
-                    {[...Array(10)].map((item, index) => (
-                      <div className={styles.selectSizeItem} key={index}>
-                        2Xl
-                      </div>
-                    ))}
+                    {( product.sizes || []).map((item, index) => {
+                      return (
+                        <div key={index} className="position-relative">
+                          <div
+                            className={`${styles.selectSizeItem} ${selectedSize === item.size && styles.isSelected}`}
+                            key={index}
+                            onClick={() => handleSelectedSize(item.size)}
+                            role="presentation"
+                          >
+                            {item.size}
+                          </div>
+                          {selectedSize === item.size && (
+                            <div className={styles.indicator}>{indicatorIcon}</div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
+                </div>
+                <div className={styles.coupons}>
+                  <div className={styles.couponsText}>Hiện có {availableQuantity} sản phẩm</div>
                 </div>
                 <div className={styles.coupons}>
                   <div className={styles.couponsText}>1 Mã Giảm Giá</div>
@@ -170,9 +232,17 @@ const ProductDetailBody: FC<PropTypes> = () => {
                   <div>
                     <p className={styles.label}>Số Lượng</p>
                     <div className={styles.groupnput}>
-                      <div className={`${styles.removeCart} ${styles.disable}`}>{removeIcon}</div>
-                      <input type="text" value="1" className={styles.inputCart} />
-                      <div className={`${styles.addCart} ${styles.disable}`}>{addIcon}</div>
+                      <div
+                        className={`${styles.removeCart} ${styles.disable}`}
+                        onClick={() => setQuantityProduct(quantityProduct === 1 ? quantityProduct : quantityProduct - 1)}
+                        role="presentation"
+                      >{removeIcon}</div>
+                      <input type="text" value={quantityProduct} className={styles.inputCart} onChange={(e) => setQuantityProduct(Number(e.target.value))} />
+                      <div
+                        className={`${styles.addCart} ${styles.disable}`}
+                        onClick={() => setQuantityProduct(quantityProduct === availableQuantity ? quantityProduct : quantityProduct + 1)}
+                        role="presentation"
+                      >{addIcon}</div>
                     </div>
                   </div>
                   <div className={styles.btnAddToCart} onClick={() => handleAddToCart()} role="presentation">Chọn mua</div>
@@ -237,7 +307,7 @@ const ProductDetailBody: FC<PropTypes> = () => {
               </div>
               <div className={styles.info}>
                 <div className={`${styles.priceDiscount} ${styles.hasDiscount}`}>
-                  <div className="price-discount__price">439.000 ₫</div>
+                  <div className="price-discount__price">{product.product.newPrice} ₫</div>
                   <div className="price-discount__discount">-51%</div>
                 </div>
                 <div className={styles.name}>

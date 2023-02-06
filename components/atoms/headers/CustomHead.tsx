@@ -12,7 +12,7 @@ const CustomHead: NextPage<PropsType> = (props) => {
 
   return (
     <Head>
-      <title>{title ? `${title} | FREE ONLINE TOEIC` : 'FREE ONLINE TOEIC'}</title>
+      <title>{title ? `${title} | TIKI` : 'TIKI'}</title>
       <link rel="icon" href="/assets/logo-toeic.webp" />
       <meta property="og:type" content="article" />
       <meta property="og:title" content="ISEECOVID" />

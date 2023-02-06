@@ -15,7 +15,7 @@ const CustomModal: FC<PropTypes> = (props) => {
   const trans = useTrans();
 
   return (
-    <Modal show={show} size="lg" centered dialogClassName={styles.customModal}>
+    <Modal show={show} size="sm" centered dialogClassName={styles.customModal}>
       <div className={styles.wrapper}>
         <p
           className={styles.close}

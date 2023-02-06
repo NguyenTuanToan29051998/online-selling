@@ -445,3 +445,28 @@
     }
   }
 }
+
+.modalConfirm {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgb(11, 116, 229);
+  color: rgb(11, 116, 229);
+  margin-right: 8px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  height: 36px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.modalCancel {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 4px;
+  height: 36px;
+  cursor: pointer;
+  box-sizing: border-box;
+  background-color: rgb(11, 116, 229);
+  color: rgb(255, 255, 255);
+}

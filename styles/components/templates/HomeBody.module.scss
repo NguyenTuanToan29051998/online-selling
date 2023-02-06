@@ -234,7 +234,7 @@
             .thumbnail {
               width: 183px;
               height: 183px;
-              background-size: contain;
+              background-size: cover;
             }
 
             .addToFavorites {
@@ -245,7 +245,7 @@
 
             .info {
               padding: 8px 0px;
-              border-bottom: 1px solid rgb(235, 235, 240);
+              // border-bottom: 1px solid rgb(235, 235, 240);
               margin: 0px 12px;
 
               .name {
@@ -275,6 +275,11 @@
                   line-height: 150%;
                   color: rgb(128, 128, 137);
                 }
+              }
+
+              .emptyRating {
+                height: 18px;
+                width: 100%;
               }
 
               .bisectingLine {

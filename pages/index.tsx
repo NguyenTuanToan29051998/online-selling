@@ -1,12 +1,12 @@
 import type { NextPage } from 'next';
 import CustomHead from '../components/atoms/headers/CustomHead';
-import MasterPage from '../components/templates/MasterPage';
+import Login from '../components/templates/Login';
 
 const Home: NextPage = () => {
   return (
     <>
       <CustomHead />
-      <MasterPage />
+      <Login />
     </>
   );
 };

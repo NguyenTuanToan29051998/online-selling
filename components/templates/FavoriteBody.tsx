@@ -1,18 +1,36 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState, MouseEvent, Dispatch, SetStateAction } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../styles/components/templates/FavoriteBody.module.scss';
 import Image from 'next/image';
 import { addIcon, deleteIcon, favoriteRedIcon, removeIcon, starIcon } from '../../public/icons';
+import { ProductOverviewType } from '@/models/product';
+import { FavoriteApiManagement } from '../../api-clients/favorite';
 
 type PropTypes = {
-
+  favoriteList: ProductOverviewType[],
+  setFavoriteList: Dispatch<SetStateAction<ProductOverviewType[]>>
 };
 
-const FavoriteBody: FC<PropTypes> = () => {
+const FavoriteBody: FC<PropTypes> = (props) => {
+  const {favoriteList, setFavoriteList} = props;
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(5);
+
+  let userInfo: { id: string; };
+  if (typeof window !== 'undefined') {
+    userInfo = JSON.parse(localStorage.getItem('user-info') || '[]');
+  };
+
+  const handleAddToFavorite = (e: MouseEvent<HTMLDivElement>, proId: number) => {
+    e.stopPropagation();
+    FavoriteApiManagement.addProductToFavorite(userInfo.id, proId).then(res => {
+      FavoriteApiManagement.getFavoritesList(userInfo.id).then((res) => {
+        setFavoriteList(res.data.proPage.content);
+      }).catch(err => console.log(err));
+    }).catch(err => console.log());
+  };
 
   useEffect(() => {
 
@@ -25,17 +43,17 @@ const FavoriteBody: FC<PropTypes> = () => {
       </div>
       <div className={styles.content}>
         <div className={styles.productList}>
-          {[...Array(24)].map(item => (
+          {(favoriteList || []).map(item => (
             <>
               <div className={styles.productItem} onClick={() => router.push('/product/1')} role="presentation">
                 <div className="position-relative">
                   <div className={styles.official} style={{ backgroundImage: `url("/assets/brand-2.jpg")` }} />
-                  <div className={styles.thumbnail} style={{ backgroundImage: `url("/assets/product-1.jpg")` }} />
-                  <div className={styles.addToFavorites}>{favoriteRedIcon}</div>
+                  <div className={styles.thumbnail} style={{ backgroundImage: `url("/assets/${item.product.image}")` }} />
+                  <div className={styles.addToFavorites} onClick={(e) => handleAddToFavorite(e, item.product.id)} role="presentation">{favoriteRedIcon}</div>
                 </div>
                 <div className={styles.info}>
                   <div className={styles.name}>
-                    <h3>Áo Khoác Gió Thể Thao Nam 5S INSPIRATION (4 Màu), Công Nghệ Cao Cấp, Chống Thấm, Cản Bụi, Cản Gió Cực Ấm (AKG22001)</h3>
+                    <h3>{item.product.name}</h3>
                   </div>
                   <div className="d-flex gap-2">
                     <div className={styles.fullRating}>
