@@ -478,7 +478,7 @@ const CheckoutBody: FC<PropTypes> = (props) => {
       <CustomModal title="Đặt hàng thành công" show={showModalOrderSuccess} setShow={setShowModalOrderSuccess}>
         <p className={styles.modalDecs}>Đơn hàng của bạn sẽ được giao trước ngày 10/02</p>
         <div className="d-flex gap-2 justify-content-end align-items-center">
-          <div className={styles.modalConfirm} onClick={() => router.push('cart')} role="presentation">Xem chi tiết</div>
+          <div className={styles.modalConfirm} onClick={() => router.push('/order')} role="presentation">Xem chi tiết</div>
           <div className={styles.modalCancel} onClick={() => router.push('/home')} role="presentation">Quay lại tang chủ</div>
         </div>
       </CustomModal>

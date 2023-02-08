@@ -15,14 +15,16 @@ import { homeApiManagement } from '../../api-clients/home';
 
 type PropTypes = {
   productList: ProductOverviewType[],
-  setProductList: Dispatch<SetStateAction<ProductOverviewType[]>>
+  setProductList: Dispatch<SetStateAction<ProductOverviewType[]>>,
+  topBuyList: ProductOverviewType[],
+  setTopBuyList: Dispatch<SetStateAction<ProductOverviewType[]>>,
   pageCount: number,
   currentPage: number,
   setCurrentPage: Dispatch<SetStateAction<number>>
 };
 
 const HomeBody: FC<PropTypes> = (props) => {
-  const {productList, setProductList, pageCount, currentPage, setCurrentPage} = props;
+  const {productList, setProductList, pageCount, currentPage, setCurrentPage, topBuyList, setTopBuyList} = props;
   const router = useRouter();
   const {formatNumberWithDot} = useFormat();
 
@@ -147,7 +149,16 @@ const HomeBody: FC<PropTypes> = (props) => {
                 <div>Sản phẩm nổi bật</div>
               </div>
               <div className={`row ${styles.highlightsList}`}>
-                <div className={`col-2`}>
+                {(topBuyList || []).map((item, index) => (
+                  <div className={`col-2`} key={index}>
+                    <div
+                      className={styles.itemHighlights}
+                      style={{ backgroundImage: `url("/assets/${item.product.image}")` }}
+                      onClick={() => router.push(`/product/${item.product.id}`)} role="presentation"
+                    />
+                  </div>
+                ))}
+                {/* <div className={`col-2`}>
                   <div className={styles.itemHighlights} />
                 </div>
                 <div className={`col-2`}>
@@ -161,10 +172,7 @@ const HomeBody: FC<PropTypes> = (props) => {
                 </div>
                 <div className={`col-2`}>
                   <div className={styles.itemHighlights} />
-                </div>
-                <div className={`col-2`}>
-                  <div className={styles.itemHighlights} />
-                </div>
+                </div> */}
               </div>
             </div>
 

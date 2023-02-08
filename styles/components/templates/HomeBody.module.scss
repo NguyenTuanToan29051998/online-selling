@@ -135,9 +135,9 @@
 
         &List {
           .itemHighlights {
-            background-image: url('/assets/highlights-1.png');
+            // background-image: url('/assets/highlights-1.png');
             height: 245px;
-            background-size: contain;
+            background-size: cover;
             background-repeat: no-repeat;
             background-position-x: center;
             border-radius: 8px;

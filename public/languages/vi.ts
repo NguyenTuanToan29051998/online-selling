@@ -150,7 +150,7 @@ export default {
     },
   },
   footer: {
-    register: 'Đăng ký nhận thông tin mới nhất từ chương trình',
+    register: 'Đăng ký để nhận các thông tin khuyến mãi',
     supportInformation: 'THÔNG TIN HỖ TRỢ',
     email : 'Vui lòng điền email của bạn',
     required: 'bắt buộc',

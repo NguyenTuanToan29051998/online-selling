@@ -107,7 +107,7 @@ const Header: FC<PropsType> = (props) => {
               <div>{favoriteGrayIcon}</div>
               <p className={styles.product}>Yêu thích</p>
             </div>
-            <div className={`${styles.menuItem} me-2`} onClick={() => router.push('/')} role="presentation">
+            <div className={`${styles.menuItem} me-2`} onClick={() => router.push('/order')} role="presentation">
               <div className="d-flex align-items-center">
                 <Image
                   src="/assets/user.png"
