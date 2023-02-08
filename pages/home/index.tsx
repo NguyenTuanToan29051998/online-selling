@@ -7,6 +7,7 @@ import { BannerType } from '@/models/banner';
 import CustomLoading from '../../components/molecules/CustomLoading';
 import { homeApiManagement } from '../../api-clients/home';
 import { ProductOverviewType } from '@/models/product';
+import { CartApiManagement } from '../../api-clients/cart';
 
 const Home: NextPageWithLayout = () => {
 
@@ -24,6 +25,16 @@ const Home: NextPageWithLayout = () => {
       setPageCount(res.data.allProducts.totalElements);
     }).catch(err => console.log(err));
   }, [currentPage]);
+
+  useEffect(() => {
+    let userInfo: { id: string; };
+    if (typeof window !== 'undefined') {
+      userInfo = JSON.parse(localStorage.getItem('user-info') || '[]');
+    } else return;
+    CartApiManagement.getCartDetail(userInfo.id).then((res) => {
+      localStorage.setItem('total-cart', res.data.cartDetail.cartItems.length || '');
+    }).catch(err => console.log(err));
+  }, []);
 
   return (
     <HomeBody

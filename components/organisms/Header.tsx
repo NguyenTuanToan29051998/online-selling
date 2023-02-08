@@ -6,9 +6,7 @@ import { Menu } from '@/models/menu';
 import {  checkGreenIcon1, closeIcon, favoriteGrayIcon } from '../../public/icons';
 
 type PropsType = {
-  isMasterPage?: boolean,
-  menus?: Menu[],
-  userType?: string,
+
 };
 
 const currentColor = ['#A4C955', '#E88E49', '#2D6AAA'];
@@ -129,6 +127,7 @@ const Header: FC<PropsType> = (props) => {
                       width={24}
                       height={24}
                     />
+                    <span className={styles.qtyCart}>9</span>
                   </div>
                   <div className={isShowNoti === 'true' ? `${styles.cartNotification}` : `${styles.hiddenBtnViewCart}`}>
                     <div className={styles.btnClose} onClick={() => router.push(`/product/${router.query.id}?isShowNoti=false`)} role="presentation">{closeIcon}</div>

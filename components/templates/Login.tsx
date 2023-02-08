@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import Header from '../organisms/Header';
 import styles from '../../styles/Login.module.scss';
 import { useRouter } from 'next/router';
 import useTrans from '../../hooks/useTrans';
@@ -34,14 +33,6 @@ const Login: NextPage = () => {
         router.push('/home');
       })
       .catch(error => console.log(error));
-    // LoginApiManagement.getLoginInfo(loginInfo.username, loginInfo.password).then(res => {
-    //   router.push('/home');
-    // }).catch((err) => console.log(err));
-    // axios.get(`https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province`, {headers: headers})
-    //   .then(res => {
-    //     localStorage.setItem('user-info', JSON.stringify(res.data));
-    //     router.push('/home');
-    // });
   };
 
   return (

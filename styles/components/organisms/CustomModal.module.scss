@@ -30,6 +30,10 @@
   }
 }
 
+.size {
+  max-width: 600px !important;
+}
+
 @media (max-width: 500px) {
   .customModal {
     .wrapper {

@@ -317,6 +317,7 @@
             text-decoration: none;
             font-size: 14px;
             line-height: 20px;
+            cursor: pointer;
           }
         }
   
@@ -366,8 +367,55 @@
         }
       }
 
-      .priceSummary {
+      .couponBlock {
+        border-radius: 4px;
         margin-top: 1rem;
+        position: relative;
+        padding: 16px;
+        // margin-bottom: 16px;
+        background-color: rgb(255, 255, 255);
+
+        .blockHeader {
+          display: flex;
+          -webkit-box-align: center;
+          align-items: center;
+          -webkit-box-pack: justify;
+          justify-content: space-between;
+          font-size: 13px;
+          line-height: 20px;
+          margin-bottom: 16px;
+          
+          &Title {
+            color: rgb(36, 36, 36);
+            margin: 0px;
+            text-transform: capitalize;
+            font-weight: 500;
+          }
+
+          &Usage {
+            color: rgb(120, 120, 120);
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+            gap: 0.25rem;
+          }
+        }
+
+        .platformCoupon {
+          padding-top: 0.5rem;
+          display: flex;
+          gap: 0.5rem;
+          -webkit-box-align: center;
+          align-items: center;
+          color: rgb(11, 116, 229);
+          font-size: 13px;
+          line-height: 20px;
+          cursor: pointer;
+        }
+      }
+
+      .priceSummary {
+        // margin-top: 1rem;
         background: rgb(255, 255, 255);
         border-radius: 4px;
         padding-bottom: 8px;
@@ -470,3 +518,32 @@
   background-color: rgb(11, 116, 229);
   color: rgb(255, 255, 255);
 }
+
+.btnLocation {
+  cursor: pointer;
+  width: 296px;
+  height: 40px;
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  line-height: 38px;
+  font-weight: 300;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  background-color: rgb(255, 66, 78);
+  text-align: center;
+}
+
+.couponList {
+  overflow: hidden;
+  max-height: 294px;
+  display: grid;
+  gap: 12px;
+  padding: 8px 5px;
+
+  .radio {
+    width: 18px;
+    height: 18px;
+  }
+}
+

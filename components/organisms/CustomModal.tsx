@@ -8,14 +8,15 @@ type PropTypes = {
   show: boolean;
   setShow: (modalConfig: any) => void;
   children: ReactNode;
+  size?: string;
 };
 
 const CustomModal: FC<PropTypes> = (props) => {
-  const { title, show, setShow, children } = props;
+  const { title, show, setShow, children, size } = props;
   const trans = useTrans();
 
   return (
-    <Modal show={show} size="sm" centered dialogClassName={styles.customModal}>
+    <Modal show={show} size="sm" centered dialogClassName={`${styles.customModal} ${size && styles.size}`}>
       <div className={styles.wrapper}>
         <p
           className={styles.close}

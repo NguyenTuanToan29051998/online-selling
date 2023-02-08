@@ -60,6 +60,7 @@
             width: 18px;
             height: 18px;
           }
+
           .methodText {
             font-size: 14px;
             line-height: 20px;
@@ -153,6 +154,7 @@
 
             .packageItemList {
               display: flex;
+              gap: 1rem;
               padding: 12px 0px;
               -webkit-box-align: center;
               align-items: center;
@@ -254,6 +256,7 @@
             text-decoration: none;
             font-size: 14px;
             line-height: 20px;
+            cursor: pointer;
           }
         }
   
@@ -300,6 +303,53 @@
             -webkit-box-align: center;
             align-items: center;
           }
+        }
+      }
+
+      .couponBlock {
+        border-radius: 4px;
+        margin-top: 1rem;
+        position: relative;
+        padding: 16px;
+        // margin-bottom: 16px;
+        background-color: rgb(255, 255, 255);
+
+        .blockHeader {
+          display: flex;
+          -webkit-box-align: center;
+          align-items: center;
+          -webkit-box-pack: justify;
+          justify-content: space-between;
+          font-size: 13px;
+          line-height: 20px;
+          margin-bottom: 16px;
+          
+          &Title {
+            color: rgb(36, 36, 36);
+            margin: 0px;
+            text-transform: capitalize;
+            font-weight: 500;
+          }
+
+          &Usage {
+            color: rgb(120, 120, 120);
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+            gap: 0.25rem;
+          }
+        }
+
+        .platformCoupon {
+          padding-top: 0.5rem;
+          display: flex;
+          gap: 0.5rem;
+          -webkit-box-align: center;
+          align-items: center;
+          color: rgb(11, 116, 229);
+          font-size: 13px;
+          line-height: 20px;
+          cursor: pointer;
         }
       }
 
@@ -385,4 +435,44 @@
       }
     }
   }
+}
+
+.modalConfirm {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgb(11, 116, 229);
+  color: rgb(11, 116, 229);
+  margin-right: 8px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  height: 36px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.modalCancel {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 4px;
+  height: 36px;
+  cursor: pointer;
+  box-sizing: border-box;
+  background-color: rgb(11, 116, 229);
+  color: rgb(255, 255, 255);
+}
+
+.btnLocation {
+  cursor: pointer;
+  width: 296px;
+  height: 40px;
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  line-height: 38px;
+  font-weight: 300;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  background-color: rgb(255, 66, 78);
+  text-align: center;
 }

@@ -1,6 +1,11 @@
 .wrapper {
-  font-weight: 500;
-  width: 100%;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  margin: 0 auto;
+  
 
   .customDropdown {
     position: relative;
@@ -14,6 +19,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 300px;
 
     a {
       position: relative;
@@ -21,7 +27,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      padding: 1rem .75rem;
+      padding: 0.5rem .75rem;
 
       &::after {
         position: absolute;
