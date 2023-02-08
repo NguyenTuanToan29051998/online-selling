@@ -142,7 +142,7 @@ const Header: FC<PropsType> = (props) => {
           </div>
         </div>
         <div className={styles.quickLink}>
-          <p className={styles.quickLinkItem} onClick={() => router.push('/product')} role="presentation">áo ấm nam</p>
+          <p className={styles.quickLinkItem} onClick={() => router.push(`/product?searchInput=áo ấm nam`)} role="presentation">áo ấm nam</p>
           <p className={styles.quickLinkItem}>áo khoác nam</p>
           <p className={styles.quickLinkItem}>áo khoác</p>
           <p className={styles.quickLinkItem}>áo ấm</p>

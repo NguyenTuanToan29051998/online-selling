@@ -20,20 +20,20 @@ const Search: NextPageWithLayout = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(0);
 
-  useEffect(() => {
-    if (!searchInput) return;
-    if (typeof window === 'undefined') return;
-    const typeUser = localStorage.getItem('type-user') || '';
-    searchManagementAPI.getAll(searchInput as string, Number(typeUser), currentPage + 1, DEFAULT_PAGE_SIZE).then((res) => {
-      setSearchResults(res.data.result);
-      setPageCount(Math.ceil(res.data.totalCount / DEFAULT_PAGE_SIZE));
-      setLoading(false);
-    }).catch(() => setLoading(false));
-  }, [currentPage, searchInput]);
+  // useEffect(() => {
+  //   if (!searchInput) return;
+  //   if (typeof window === 'undefined') return;
+  //   const typeUser = localStorage.getItem('type-user') || '';
+  //   searchManagementAPI.getAll(searchInput as string, Number(typeUser), currentPage + 1, DEFAULT_PAGE_SIZE).then((res) => {
+  //     setSearchResults(res.data.result);
+  //     setPageCount(Math.ceil(res.data.totalCount / DEFAULT_PAGE_SIZE));
+  //     setLoading(false);
+  //   }).catch(() => setLoading(false));
+  // }, [currentPage, searchInput]);
 
   return (
     <CustomContainer size="large">
-      {loading && <CustomLoading />}
+      {/* {loading && <CustomLoading />}
       {!loading && searchResults && (
         <SearchBody
           searchResults={searchResults}
@@ -41,7 +41,7 @@ const Search: NextPageWithLayout = () => {
           setCurrentPage={setCurrentPage}
           pageCount={pageCount}
         />
-      )}
+      )} */}
     </CustomContainer>
   );
 };

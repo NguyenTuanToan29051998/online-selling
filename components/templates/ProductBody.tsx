@@ -4,12 +4,18 @@ import { useRouter } from 'next/router';
 import styles from '../../styles/components/templates/ProductBody.module.scss';
 import { favoriteGrayIcon, favoriteIcon, favoriteRedIcon, starIcon } from '../../public/icons';
 import PaginationSection from '../organisms/PaginationSection';
+import { ProductOverviewType } from '@/models/product';
+import { homeApiManagement } from '../../api-clients/home';
+import { FavoriteApiManagement } from '../../api-clients/favorite';
+import useFormat from '../../hooks/useFormat';
+import { searchManagementAPI } from '../../api-clients/search';
 
 type PropTypes = {
 
 };
 
 const ProductBody: FC<PropTypes> = () => {
+  const { formatNumberWithDot } = useFormat();
   const router = useRouter();
   const { searchInput } = router.query;
   const searchText = ''.toString().concat('`', searchInput as string, '`');
@@ -17,15 +23,35 @@ const ProductBody: FC<PropTypes> = () => {
   const [pageCount, setPageCount] = useState<number>(5);
   const [numberSelected, setNumberSelected] = useState<number>(0);
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const [productList, setProductList] = useState<ProductOverviewType[]>([]);
 
-  const handleAddToFavorite = (e: MouseEvent<HTMLDivElement>) => {
+  let userInfo: { id: string; };
+  if (typeof window !== 'undefined') {
+    userInfo = JSON.parse(localStorage.getItem('user-info') || '[]');
+  }
+
+  const handleAddToFavorite = (e: MouseEvent<HTMLDivElement>, proId: number) => {
     e.stopPropagation();
-    setIsFavorite(!isFavorite);
+    FavoriteApiManagement.addProductToFavorite(userInfo.id, proId).then(res => {
+      homeApiManagement.getAllProduct(userInfo.id && userInfo.id || '').then((res) => {
+        setProductList(res.data.allProducts.content);
+      }).catch(err => console.log(err));
+    }).catch(err => console.log());
   };
 
   useEffect(() => {
-    console.log('xxxxxxxxxx');
-  }, []);
+    if (searchInput) {
+      searchManagementAPI.getDataSearch(searchInput as string).then((res) => {
+        setProductList(res.data.proPage.content);
+        // setPageCount(res.data.allProducts.totalElements);
+      }).catch(err => console.log(err));
+    } else {
+      homeApiManagement.getAllProduct(userInfo.id && userInfo.id || '').then((res) => {
+        setProductList(res.data.allProducts.content);
+        setPageCount(res.data.allProducts.totalElements);
+      }).catch(err => console.log(err));
+    }
+  }, [searchInput]);
 
   return (
     <div className={styles.productBody}>
@@ -97,7 +123,7 @@ const ProductBody: FC<PropTypes> = () => {
               <div className={styles.priceSmallText}>Chọn khoảng giá</div>
               <div className={styles.inputGroup}>
                 <input pattern="[0-9]*" placeholder="Giá từ" value="0" />
-                  <span>-</span>
+                <span>-</span>
                 <input pattern="[0-9]*" placeholder="Giá đến" value="0" />
               </div>
               <button className={styles.submitButton}>Áp dụng</button>
@@ -130,7 +156,7 @@ const ProductBody: FC<PropTypes> = () => {
 
         <div className={styles.rightArea}>
           <div className={styles.summarySearch}>
-            <div className={styles.inputSearch}>{searchInput ? `Kết quả tìm kiếm cho ${searchText}`: "Tất cả sản phẩm"}</div>
+            <div className={styles.inputSearch}>{searchInput ? `Kết quả tìm kiếm cho ${searchText}` : "Tất cả sản phẩm"}</div>
             <div className={styles.sorter}>
               <div>
                 <div
@@ -174,49 +200,56 @@ const ProductBody: FC<PropTypes> = () => {
               </div>
             </div>
           </div>
-
-          <div className={styles.productList}>
-            {[...Array(24)].map(item => (
-              <div className={styles.productItem} onClick={() => router.push('/product/1')} role="presentation" key={Math.random()}>
-                <div className="position-relative">
-                  <div className={styles.official} style={{ backgroundImage: `url("/assets/brand-2.jpg")` }} />
-                  <div className={styles.thumbnail} style={{ backgroundImage: `url("/assets/product-1.jpg")` }} />
-                  <div className={styles.addToFavorites} onClick={(e) => handleAddToFavorite(e)} role="presentation">
-                    {isFavorite ? favoriteRedIcon : favoriteGrayIcon}
+          {!productList.length ? (
+            <div className="m-4">Chưa có sản phẩm phù hợp</div>
+          ) : (
+            <div className={styles.productList}>
+              {(productList || []).map((item, index) => (
+                <div className={styles.productItem} onClick={() => router.push(`/product/${item.product.id}`)} role="presentation" key={index}>
+                  <div className="position-relative">
+                    <div className={styles.official} style={{ backgroundImage: `url("/assets/brand-2.jpg")` }} />
+                    <div className={styles.thumbnail} style={{ backgroundImage: `url("/assets/${item.product.image}")` }} />
+                    <div className={styles.addToFavorites} onClick={(e) => handleAddToFavorite(e, item.product.id)} role="presentation">{item.like ? favoriteRedIcon : favoriteGrayIcon}</div>
                   </div>
-                </div>
-                <div className={styles.info}>
-                  <div className={styles.name}>
-                    <h3>Áo Khoác Gió Thể Thao Nam 5S INSPIRATION (4 Màu), Công Nghệ Cao Cấp, Chống Thấm, Cản Bụi, Cản Gió Cực Ấm (AKG22001)</h3>
-                  </div>
-                  <div className="d-flex gap-2">
-                    <div className={styles.fullRating}>
-                      <span className={styles.point}>4.2</span>
-                      <div className="d-flex">{starIcon('14', '#fdd836')}</div>
+                  <div className={styles.info}>
+                    <div className={styles.name}>
+                      <h3>{item.product.name}</h3>
                     </div>
-                    <div className={styles.bisectingLine} />
-                    <span className={styles.quantity}>Đã bán 20</span>
-                  </div>
-                  <div className={`${styles.priceDiscount} ${styles.hasDiscount}`}>
-                    <div className="price-discount__price">439.000 ₫</div>
-                    <div className="price-discount__discount">-51%</div>
-                  </div>
-                  <div className={styles.badgeUnderPrice}>Tặng tới 1000 ASA (224k ₫) <br />≈ 1.0% hoàn tiền</div>
-                  <div className={styles.badgeUnderRating}>
-                    <div className={styles.item}>
-                      <span>Freeship+</span>
+                    {!!item.boughtQuantity ? (
+                      <div className="d-flex gap-2">
+                        <div className={styles.fullRating}>
+                          <span className={styles.point}>{item.rating}</span>
+                          <div className="d-flex">{starIcon('14', '#fdd836')}</div>
+                        </div>
+                        <div className={styles.bisectingLine} />
+                        <span className={styles.quantity}>Đã bán {item.boughtQuantity}</span>
+                      </div>
+                    ) : (
+                      <div className={styles.emptyRating} />
+                    )}
+                    <div className={`${styles.priceDiscount} ${styles.hasDiscount}`}>
+                      <div className="price-discount__price">{!item.decreasePercent ? formatNumberWithDot(item.newPrice) : formatNumberWithDot(item.product.price)} đ</div>
+                      {!!item.decreasePercent && (
+                        <div className="price-discount__discount">-51%</div>
+                      )}
                     </div>
-                    <div className={styles.item}>
-                      <span>Trả góp</span>
+                    {/* <div className={styles.badgeUnderPrice}>Tặng tới 1000 ASA (224k ₫) <br />≈ 1.0% hoàn tiền</div> */}
+                    <div className={styles.badgeUnderRating}>
+                      <div className={styles.item}>
+                        <span>Freeship+</span>
+                      </div>
+                      {/* <div className={styles.item}>
+                    <span>Trả góp</span>
+                  </div> */}
                     </div>
                   </div>
+                  {/* <div className={styles.badgeDelivery}>
+                <span>Giao thứ 3, ngày 03/01</span>
+              </div> */}
                 </div>
-                <div className={styles.badgeDelivery}>
-                  <span>Giao thứ 3, ngày 03/01</span>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <div className="mt-5">
