@@ -1,11 +1,11 @@
 export type SearchType = {
-  id: number;
-  title: string;
-  content: string;
-  date: string;
-  image: string;
-  altImage: string;
-  createdAt: string;
-  startDate: string;
-  url: string;
+  cateName: string,
+  material: string,
+  color: string,
+  size: string,
+  min: number,
+  max: number,
+  minToMax: string,
+  order: string,
+  rating: string,
 }

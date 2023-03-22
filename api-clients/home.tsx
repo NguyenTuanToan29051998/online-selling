@@ -2,7 +2,11 @@ import axiosClient from "./axios-client";
 
 export const homeApiManagement = {
 
-  getAllProduct(userId: string) {
+  getAllProductHome(userId: string) {
     return axiosClient.get(`/api/home/index?user=${userId}`);
+  },
+
+  getAllProduct(userId: string) {
+    return axiosClient.get(`/api/product/all?user=${userId}`);
   },
 };

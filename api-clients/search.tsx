@@ -9,4 +9,8 @@ export const searchManagementAPI = {
   getDataSearch(searchInput: string) {
     return axiosClient.get(`api/home/search?keyword=${searchInput}`);
   },
+
+  getDataFilter(cateName: string, rating: string, color: string, size: string, min: number, max: number) {
+    return  axiosClient.post(`api/product/filters?cateName=${cateName || ''}&material=&color=${color || ''}&size=${size || ''}&min=${min || ''}&max=${max || ''}&order=asc&rating=${rating || ''}&page=0&sizepage=24&user=1`);
+  }
 };

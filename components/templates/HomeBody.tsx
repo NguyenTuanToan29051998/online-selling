@@ -36,7 +36,7 @@ const HomeBody: FC<PropTypes> = (props) => {
   const handleAddToFavorite = (e: MouseEvent<HTMLDivElement>, proId: number) => {
     e.stopPropagation();
     FavoriteApiManagement.addProductToFavorite(userInfo.id, proId).then(res => {
-      homeApiManagement.getAllProduct(userInfo.id && userInfo.id || '').then((res) => {
+      homeApiManagement.getAllProductHome(userInfo.id && userInfo.id || '').then((res) => {
         setProductList(res.data.allProducts.content);
       }).catch(err => console.log(err));
     }).catch(err => console.log());
@@ -64,7 +64,7 @@ const HomeBody: FC<PropTypes> = (props) => {
                       alt="main-logo"
                     />
                   </div>
-                  <div className={styles.subTitle}>Mã giảm giá</div>
+                  <div className={styles.subTitle}>Đang khuyến mãi</div>
                 </div>
                 <div className={styles.item}>
                   <div className="d-flex">
@@ -75,7 +75,18 @@ const HomeBody: FC<PropTypes> = (props) => {
                       alt="main-logo"
                     />
                   </div>
-                  <div className={styles.subTitle}>Mua nhiều</div>
+                  <div className={styles.subTitle}>Mua nhiều Nhất</div>
+                </div>
+                <div className={styles.item}>
+                  <div className="d-flex">
+                    <Image
+                      src="/assets/item-1.png"
+                      width={32}
+                      height={32}
+                      alt="main-logo"
+                    />
+                  </div>
+                  <div className={styles.subTitle}>Tương tác nhiều nhất</div>
                 </div>
               </div>
               <div className={styles.items}>
@@ -273,9 +284,9 @@ const HomeBody: FC<PropTypes> = (props) => {
                           <div className={styles.emptyRating} />
                         )}
                         <div className={`${styles.priceDiscount} ${styles.hasDiscount}`}>
-                          <div className="price-discount__price">{!item.decreasePercent ? formatNumberWithDot(item.newPrice) : formatNumberWithDot(item.product.price)} đ</div>
+                          <div className="price-discount__price">{item.decreasePercent ? formatNumberWithDot(item.newPrice) : formatNumberWithDot(item.product.price)} đ</div>
                           {!!item.decreasePercent && (
-                            <div className="price-discount__discount">-51%</div>
+                            <div className="price-discount__discount">-{item.decreasePercent}%</div>
                           )}
                         </div>
                         {/* <div className={styles.badgeUnderPrice}>Tặng tới 1000 ASA (224k ₫) <br />≈ 1.0% hoàn tiền</div> */}

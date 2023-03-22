@@ -30,8 +30,16 @@
   }
 }
 
-.size {
+.sm {
+  max-width: 420px !important;
+}
+
+.xl {
   max-width: 600px !important;
+}
+
+.md {
+  max-width: 1000px !important;
 }
 
 @media (max-width: 500px) {

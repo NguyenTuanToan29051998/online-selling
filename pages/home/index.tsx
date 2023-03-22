@@ -21,7 +21,7 @@ const Home: NextPageWithLayout = () => {
     if (typeof window !== 'undefined') {
       userInfo = JSON.parse(localStorage.getItem('user-info') || '[]');
     } else return;
-    homeApiManagement.getAllProduct(userInfo.id && userInfo.id || '').then((res) => {
+    homeApiManagement.getAllProductHome(userInfo.id && userInfo.id || '').then((res) => {
       setProductList(res.data.allProducts.content);
       setTopBuyList(res.data.topBuy);
       setPageCount(res.data.allProducts.totalElements);

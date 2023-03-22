@@ -34,12 +34,14 @@ export type ProductType = {
   note: string,
   material: string,
   image: string,
-  category: {
-    id: number,
-    name: string,
-    note: string,
-    status: number,
-  }
+  categorys: CategoryType[],
+}
+
+export type CategoryType = {
+  id: number,
+  name: string,
+  note: string,
+  status: number,
 }
 
 

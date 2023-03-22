@@ -13,10 +13,10 @@ const Order: NextPageWithLayout = () => {
   const router = useRouter();
 
   return (
-    <CustomContainer size="medium">
-      <BreadCrumb firstLayer="Trang chủ" lastLayer={"Đơn hàng của tôi"} />
+    <>
+      <div className="ps-5"><BreadCrumb firstLayer="Trang chủ" lastLayer={"Đơn hàng của tôi"} /></div>
       <OrderBody />
-    </CustomContainer>
+    </>
   );
 };
 

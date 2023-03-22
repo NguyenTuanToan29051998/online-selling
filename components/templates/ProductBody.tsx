@@ -4,11 +4,17 @@ import { useRouter } from 'next/router';
 import styles from '../../styles/components/templates/ProductBody.module.scss';
 import { favoriteGrayIcon, favoriteIcon, favoriteRedIcon, starIcon } from '../../public/icons';
 import PaginationSection from '../organisms/PaginationSection';
-import { ProductOverviewType } from '@/models/product';
+import { CategoryType, ProductOverviewType } from '@/models/product';
 import { homeApiManagement } from '../../api-clients/home';
 import { FavoriteApiManagement } from '../../api-clients/favorite';
 import useFormat from '../../hooks/useFormat';
 import { searchManagementAPI } from '../../api-clients/search';
+import { SearchType } from '@/models/search';
+
+type PriceToSearchType = {
+  min: number,
+  max: number
+}
 
 type PropTypes = {
 
@@ -22,8 +28,25 @@ const ProductBody: FC<PropTypes> = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(5);
   const [numberSelected, setNumberSelected] = useState<number>(0);
-  const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [productList, setProductList] = useState<ProductOverviewType[]>([]);
+  const [searchInfo, setSearchInfo] = useState<SearchType>({
+    cateName: '',
+    material: '',
+    color: '',
+    size: '',
+    min: 0,
+    max: 0,
+    minToMax: '',
+    order: '',
+    rating: '',
+  });
+  const [categoryList, setCategotyList] = useState<CategoryType[]>([]);
+  const [colorList, setColorList] = useState<string[]>([]);
+  const [isFilter, setIsFilter] = useState<boolean>(false);
+  const [priceToSearch, setPriceToSearch] = useState<PriceToSearchType>({
+    min: 0,
+    max: 0,
+  });
 
   let userInfo: { id: string; };
   if (typeof window !== 'undefined') {
@@ -34,30 +57,72 @@ const ProductBody: FC<PropTypes> = () => {
     e.stopPropagation();
     FavoriteApiManagement.addProductToFavorite(userInfo.id, proId).then(res => {
       homeApiManagement.getAllProduct(userInfo.id && userInfo.id || '').then((res) => {
-        setProductList(res.data.allProducts.content);
+        setProductList(res.data.proPage.content);
       }).catch(err => console.log(err));
     }).catch(err => console.log());
   };
 
+  const handleFilter = (name:  'cateName' | 'color' | 'rating', item: string) => {
+    setIsFilter(true);
+    setSearchInfo({...searchInfo, [name]: searchInfo[name] === item ? '' : item});
+  };
+
+  const handleCloseFilter = () => {
+    setSearchInfo({
+      cateName: '',
+      material: '',
+      color: '',
+      size: '',
+      min: 0,
+      max: 0,
+      minToMax: '',
+      order: '',
+      rating: '',
+    });
+    setPriceToSearch({
+      min: 0,
+      max: 0,
+    });
+  };
+
+  const handleSearchByPrice = () => {
+    setIsFilter(true);
+    setSearchInfo({
+      ...searchInfo,
+      min: priceToSearch.min,
+      max: priceToSearch.max,
+      minToMax: priceToSearch.max ? (priceToSearch.min ? `Từ ${priceToSearch.min}đ đến ${priceToSearch.max}đ` : `Từ 0đ đến ${priceToSearch.max}đ`) : `Từ 0đ đến ${priceToSearch.min}đ`
+    });
+  };
+
   useEffect(() => {
-    if (searchInput) {
-      searchManagementAPI.getDataSearch(searchInput as string).then((res) => {
+    if (!searchInput) {
+      homeApiManagement.getAllProduct('1').then((res) => {
         setProductList(res.data.proPage.content);
-        // setPageCount(res.data.allProducts.totalElements);
+        setCategotyList(res.data.categories);
+        setColorList(res.data.color);
       }).catch(err => console.log(err));
     } else {
-      homeApiManagement.getAllProduct(userInfo.id && userInfo.id || '').then((res) => {
-        setProductList(res.data.allProducts.content);
-        setPageCount(res.data.allProducts.totalElements);
+      searchManagementAPI.getDataSearch(searchInput as string).then((res) => {
+        setProductList(res.data.proPage.content);
+        setCategotyList(res.data.categories);
+        setColorList(res.data.color);
       }).catch(err => console.log(err));
     }
   }, [searchInput]);
+
+  useEffect(() => {
+    if (!isFilter) return;
+    searchManagementAPI.getDataFilter(searchInfo.cateName, searchInfo.rating, searchInfo.color, searchInfo.size, searchInfo.min, searchInfo.max).then((res) => {
+      setProductList(res.data.proPage.content);
+    }).catch(err => console.log(err));
+  }, [searchInfo]);
 
   return (
     <div className={styles.productBody}>
       <div className={styles.content}>
         <div className={styles.leftArea}>
-          <div className={styles.blockFilter}>
+          {/* <div className={styles.blockFilter}>
             <h4 className={styles.title}>Danh Mục Sản Phẩm</h4>
             <div className={styles.listCollapsed}>
               <span className={styles.searchFilterItem}>Tẩy trang</span>
@@ -72,11 +137,41 @@ const ProductBody: FC<PropTypes> = () => {
               <span className={styles.searchFilterItem}>Đầm Dáng Xòe</span>
               <span className={styles.searchFilterItem}>Sofa/ salon và phụ kiện</span>
             </div>
+          </div> */}
+          <div className={styles.blockFilter}>
+            <h4 className={styles.title}>Thương hiệu</h4>
+            <div className={styles.listCollapsed}>
+              {categoryList.map((item, index) => {
+                return (
+                  <div className={styles.searchFilterItem} key={index}>
+                    <div className="d-flex gap-2">
+                      <input type="checkbox" className={styles.checkbox} onClick={() => handleFilter('cateName', item.name)} checked={item.name === searchInfo.cateName} />
+                      <span>{item.name}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className={styles.blockFilter}>
+            <h4 className={styles.title}>Màu sắc</h4>
+            <div className={styles.listCollapsed}>
+              {colorList.map((item, index) => {
+                return (
+                  <div className={styles.searchFilterItem} key={index}>
+                    <div className="d-flex gap-2">
+                      <input type="checkbox" name="color" className={styles.checkbox} onClick={() => handleFilter('color', item)} checked={item === searchInfo.color} />
+                      <span>{item}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
           <div className={styles.blockFilter}>
             <h4 className={styles.title}>Đánh giá</h4>
             <div className={styles.listCollapsed}>
-              <div className={styles.searchFilterItem}>
+              <div className={styles.searchFilterItem} onClick={() => handleFilter('rating', '5')} role="presentation">
                 <div className="d-flex gap-1">
                   <div className="d-flex">
                     {starIcon('14', '#fdd836')}
@@ -88,7 +183,7 @@ const ProductBody: FC<PropTypes> = () => {
                   <span>Từ 5 sao</span>
                 </div>
               </div>
-              <div className={styles.searchFilterItem}>
+              <div className={styles.searchFilterItem} onClick={() => handleFilter('rating', '4')} role="presentation">
                 <div className="d-flex gap-1">
                   <div className="d-flex">
                     {starIcon('14', '#fdd836')}
@@ -100,7 +195,7 @@ const ProductBody: FC<PropTypes> = () => {
                   <span>Từ 4 sao</span>
                 </div>
               </div>
-              <div className={styles.searchFilterItem}>
+              <div className={styles.searchFilterItem} onClick={() => handleFilter('rating', '3')} role="presentation">
                 <div className="d-flex gap-1">
                   <div className="d-flex">
                     {starIcon('14', '#fdd836')}
@@ -117,39 +212,30 @@ const ProductBody: FC<PropTypes> = () => {
           <div className={styles.blockFilter}>
             <h4 className={styles.title}>Giá</h4>
             <div className={styles.listCollapsed}>
-              <div className={styles.filterPrice}>Dưới 70.000</div>
-              <div className={styles.filterPrice}>170.000 {`->`} 240.000</div>
-              <div className={styles.filterPrice}>Trên 240.000</div>
+              <div
+                className={styles.filterPrice}
+                onClick={() => setSearchInfo({...searchInfo, min: 0, max: 70000, minToMax: 'Từ 0đ đến 70.000đ'})}
+                role="presentation"
+              >
+                Dưới 70.000
+              </div>
+              <div
+                className={styles.filterPrice}
+                onClick={() => setSearchInfo({...searchInfo, min: 170000, max: 240000, minToMax: 'Từ 170.000đ đến 240.000đ'})}
+                role="presentation"
+              >170.000 {`->`} 240.000</div>
+              <div
+                className={styles.filterPrice}
+                onClick={() => setSearchInfo({...searchInfo, min: 240000, max: 999000000, minToMax: 'Trên 240.000đ'})}
+                role="presentation"
+              >Trên 240.000</div>
               <div className={styles.priceSmallText}>Chọn khoảng giá</div>
               <div className={styles.inputGroup}>
-                <input pattern="[0-9]*" placeholder="Giá từ" value="0" />
+                <input pattern="[0-9]*" placeholder="Giá từ" value={priceToSearch.min} onChange={(e) => setPriceToSearch({...priceToSearch, min: Number(e.currentTarget.value)})} />
                 <span>-</span>
-                <input pattern="[0-9]*" placeholder="Giá đến" value="0" />
+                <input pattern="[0-9]*" placeholder="Giá đến" value={priceToSearch.max} onChange={(e) => setPriceToSearch({...priceToSearch, max: Number(e.currentTarget.value)})} />
               </div>
-              <button className={styles.submitButton}>Áp dụng</button>
-            </div>
-          </div>
-          <div className={styles.blockFilter}>
-            <h4 className={styles.title}>Thương hiệu</h4>
-            <div className={styles.listCollapsed}>
-              <div className={styles.searchFilterItem}>
-                <div className="d-flex gap-2">
-                  <input type="checkbox" name="" id="" className={styles.checkbox} />
-                  <span>Senka</span>
-                </div>
-              </div>
-              <div className={styles.searchFilterItem}>
-                <div className="d-flex gap-2">
-                  <input type="checkbox" name="" id="" className={styles.checkbox} />
-                  <span>DHC</span>
-                </div>
-              </div>
-              <div className={styles.searchFilterItem}>
-                <div className="d-flex gap-2">
-                  <input type="checkbox" name="" id="" className={styles.checkbox} />
-                  <span>DHC</span>
-                </div>
-              </div>
+              <button className={styles.submitButton} onClick={() => handleSearchByPrice()}>Áp dụng</button>
             </div>
           </div>
         </div>
@@ -198,6 +284,26 @@ const ProductBody: FC<PropTypes> = () => {
                 </div>
                 {numberSelected === 3 && <div className={styles.underlined} />}
               </div>
+            </div>
+            <div className={styles.filterItems}>
+              {Object.entries(searchInfo).map(item => {
+                return (
+                  (!!item[1] && item[0] !== 'min' && item[0] !== 'max' && (
+                    <p className={styles.item} key={Math.random()}>
+                      {item[0] === 'rating' && `Từ ${item[1]} sao` || item[1]}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="https://salt.tikicdn.com/ts/brickv2og/1c/00/94/6392bb4ffb13ead8d973bb2ee36b7bc4.png"
+                        alt="Xóa"
+                        onClick={() => setSearchInfo({...searchInfo, [item[0]] :  typeof(item[1]) === 'string' ? '' : 0})}
+                        role="presentation"
+                      />
+                    </p>
+                  ))
+                  );
+              })}
+
+              {Object.entries(searchInfo).some(item => !!item[1]) && <p className={`${styles.item} ${styles.default}`} onClick={() => handleCloseFilter()} role="presentation">Xóa tất cả</p>}
             </div>
           </div>
           {!productList.length ? (

@@ -58,6 +58,7 @@ const Footer: FC<PropsType> = (props) => {
           <img
             src="/assets/logoweb.png"
             alt="logoBox"
+            style={{height: '140px'}}
           />
         </div>
         <div className={`${styles.lineContent}`}>

@@ -5,6 +5,14 @@ import styles from '../../styles/components/templates/OrderBody.module.scss';
 import { OrderApiManagement } from '../../api-clients/order';
 import { OrderType } from '@/models/order';
 import CustomModal from '../organisms/CustomModal';
+import Image from 'next/image';
+import useFormat from '../../hooks/useFormat';
+import { addIcon, deleteIcon, removeIcon } from '../../public/icons';
+
+export type ModalType = {
+  isDelete: boolean,
+  isDetail: boolean,
+}
 
 type PropTypes = {
 
@@ -12,9 +20,13 @@ type PropTypes = {
 
 const OrderBody: FC<PropTypes> = () => {
   const router = useRouter();
+  const { formatNumberWithDot } = useFormat();
   const [numberSelectedTab, setNumberSelectedtab] = useState<number>(0);
   const [orderHistoryList, setOrderHistoryList] = useState<OrderType[]>([]);
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<ModalType>({
+    isDelete: false,
+    isDetail: false,
+  });
   const [billId, setBillId] = useState<number>(-1);
 
   let userInfo: { id: string; };
@@ -22,9 +34,9 @@ const OrderBody: FC<PropTypes> = () => {
     userInfo = JSON.parse(localStorage.getItem('user-info') || '[]');
   };
 
-  const handleOpenModalDeleteOrder = (billId: number) => {
+  const handleOpenModal = (isDel: boolean, billId: number) => {
     setBillId(billId);
-    setShowModal(true);
+    setShowModal({...showModal, isDelete: isDel, isDetail: !isDel });
   };
 
   const handleDeleteOrder = () => {
@@ -69,11 +81,15 @@ const OrderBody: FC<PropTypes> = () => {
     }
   }, [numberSelectedTab]);
 
+  const handleUpdateCart = () => {
+
+  };
+
   return (
     <div className={styles.orderBody}>
       <div className="row">
-        <div className="col-3">Tài khoản</div>
-        <div className="col-9">
+        <div className="col-2">Tài khoản</div>
+        <div className="col-10">
           <div className="mb-3">Đơn hàng của tôi</div>
           <div className={styles.tabList}>
             <div className={`${styles.tab} ${numberSelectedTab === 0 && styles.isSelected}`} onClick={() => setNumberSelectedtab(0)} role="presentation">Tất cả đơn</div>
@@ -91,22 +107,35 @@ const OrderBody: FC<PropTypes> = () => {
                 <thead>
                   <tr className="table-row">
                     <th scope="col" className="col-2"><div className="ms-3">Số thứ tự</div></th>
+                    <th scope="col" className="col-1">Ảnh</th>
                     <th scope="col" className="col-3">Tên sản phẩm</th>
-                    <th scope="col" className="col-2">Màu sắc</th>
-                    <th scope="col" className="col-1"></th>
-                    <th scope="col" className="col-1"></th>
+                    <th scope="col" className="col-1">Màu sắc</th>
+                    <th scope="col" className="col-1">Kích cỡ</th>
+                    <th scope="col" className="col-1">Số lượng</th>
+                    <th scope="col" className="col-1">Giá bán</th>
+                    <th scope="col" style={{ minWidth: '100px' }}>Thành tiền</th>
+                    <th scope="col" className="col-2"></th>
+                    <th scope="col" className="col-2"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {(orderHistoryList || []).map((item, index) => (
                     <tr className={styles.rowBody} key={index}>
-                      <td className="col-1"><div className="ms-3">Đơn hàng {index + 1}</div></td>
+                      <td className="col-1"><div className={`ms-3 ${styles.center}`} >Đơn hàng {index + 1}</div></td>
+                      <td className="col-1">
+                        {item.billDetails.map((val, ind) => {
+                          return (
+                            // eslint-disable-next-line react/jsx-key
+                            <div className={styles.image} style={{ backgroundImage: `url("/assets/${val.productDetail.thumnail}")` }} />
+                          );
+                        })}
+                      </td>
                       <td className="col-2">
                         {item.billDetails.map((val, ind) => {
                           return (
                             // eslint-disable-next-line react/jsx-key
-                            <div>
-                              <td className="mw-150 ">{val.productDetail.product.name}</td>
+                            <div className={styles.center}>
+                              <td className="mw-150">{val.productDetail.product.name}</td>
                             </div>
                           );
                         })}
@@ -115,23 +144,58 @@ const OrderBody: FC<PropTypes> = () => {
                         {item.billDetails.map((val, ind) => {
                           return (
                             // eslint-disable-next-line react/jsx-key
-                            <div>
-                              <td key={ind} className="mw-150 ms-5"><div>{val.productDetail.color}</div></td>
+                            <div className={styles.center}>
+                              <td key={ind} className="mw-150"><div>{val.productDetail.color}</div></td>
                             </div>
                           );
                         })}
                       </td>
-                      {numberSelectedTab === 1 ? (
-                        <>
-                          <td className={styles.mw50}>{numberSelectedTab === 1 && 'Sửa'}</td>
-                        <td className={styles.mw50} onClick={() => handleOpenModalDeleteOrder(item.id)} role="presentation">{numberSelectedTab === 1 && 'Xóa'}</td>
-                        </>
-                      ) : (
-                        <>
-                          <td className={styles.mw50}></td>
-                          <td className={styles.mw50}></td>
-                        </>
-                      )}
+                      <td className="col-1">
+                        {item.billDetails.map((val, ind) => {
+                          return (
+                            // eslint-disable-next-line react/jsx-key
+                            <div className={styles.center}>
+                              <td key={ind} className="mw-150"><div>{val.productDetail.size}</div></td>
+                            </div>
+                          );
+                        })}
+                      </td>
+                      <td className="col-1">
+                        {item.billDetails.map((val, ind) => {
+                          return (
+                            // eslint-disable-next-line react/jsx-key
+                            <div className={styles.center}>
+                              <td key={ind} className="mw-150"><div>{val.quantity}</div></td>
+                            </div>
+                          );
+                        })}
+                      </td>
+                      <td className="col-1">
+                        {item.billDetails.map((val, ind) => {
+                          return (
+                            // eslint-disable-next-line react/jsx-key
+                            <div className={styles.center}>
+                              <td key={ind}><div>{formatNumberWithDot(val.unitPrice)}đ</div></td>
+                            </div>
+                          );
+                        })}
+                      </td>
+                      <td className="col-1">
+                        {item.billDetails.map((val, ind) => {
+                          return (
+                            // eslint-disable-next-line react/jsx-key
+                            <div className={styles.center}>
+                              <td key={ind} className="mw-100"><div>{formatNumberWithDot(val.total)}đ</div></td>
+                            </div>
+                          );
+                        })}
+                      </td>
+                      <td>
+                        <div className={`${styles.center} gap-3`}>
+                          <td className={`${numberSelectedTab === 1 && styles.mw50 || styles.minW75}`} onClick={() => handleOpenModal(false, item.id)} role="presentation">{(numberSelectedTab === 1 && 'Sửa') || (numberSelectedTab === 3 && 'Hoàn trả')}</td>
+                          <td className={`${numberSelectedTab === 1 && styles.mw50 || styles.minW75}`} onClick={() => handleOpenModal(true, item.id)} role="presentation">{(numberSelectedTab === 1 && 'Xóa') ||  (numberSelectedTab === 3 && 'Đánh giá')}</td>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -140,11 +204,74 @@ const OrderBody: FC<PropTypes> = () => {
           )}
         </div>
       </div>
-      <CustomModal title="Hủy đơn hàng" show={showModal} setShow={setShowModal}>
-        <p className={styles.modalDecs}>Xác nhận hủy đơn hàng</p>
+      <CustomModal size="md" title={showModal.isDelete ? "Hủy đơn hàng" : "Sửa đơn hàng"} show={showModal.isDetail || showModal.isDelete} setShow={setShowModal}>
+        {showModal.isDelete ? (
+          <p className={styles.modalDecs}>Xác nhận hủy đơn hàng</p>
+        ) : (
+          <>
+            {(orderHistoryList[0]?.billDetails || []).map((item, index) => {
+            return (
+              <div className={styles.intened} key={Math.random()}>
+                <div className="d-flex align-items-center">
+                  <div className={styles.productInfo}>
+                    <div className="d-flex">
+                      <Image
+                        src={`/assets/${item.productDetail.product.image}`}
+                        width={77}
+                        height={80}
+                        alt={item.productDetail.product.name}
+                      />
+                    </div>
+                    <div className={styles.info}>
+                      <div className={styles.name}>{(item.productDetail.product.name)}</div>
+                      <div className={styles.shippingInfoItemHeader}>
+                        <div className="d-flex">
+                          <Image
+                            src="/assets/fast-logo.png"
+                            width={32}
+                            height={14}
+                            alt="fast-logo"
+                          />
+                        </div>
+                        <div className={styles.divider} />
+                        <div className={styles.shippingInfoItemHeaderHighlight}>Trước 14:00 hôm nay</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.productPrice}>
+                    <div className={styles.realPrice}>{formatNumberWithDot(item.productDetail.product.price)} ₫</div>
+                    <del className={styles.discountPrice}>{formatNumberWithDot(item.productDetail.product.price)} ₫</del>
+                  </div>
+                  <div className={styles.productQty}>
+                    <div className={styles.groupnput}>
+                      <div
+                        className={`${styles.removeCart} ${styles.disable}`}
+                        // onClick={() => handleUpdateCart(item.id, item.quantity, false)}
+                        role="presentation"
+                      >{removeIcon}</div>
+                      <input type="text" value={item.quantity} className={styles.inputCart} />
+                      <div
+                        className={`${styles.addCart} ${styles.disable}`}
+                        // onClick={() => handleUpdateCart(item.id, item.quantity, true)}
+                        role="presentation"
+                      >{addIcon}</div>
+                    </div>
+                  </div>
+                  <div className={styles.finalProduct}>{formatNumberWithDot(item.productDetail.product.price)} ₫</div>
+                  <div
+                    className={styles.productremove}
+                    // onClick={() => handleOpenModalDelete(item.id)}
+                    role="presentation"
+                  >{deleteIcon}</div>
+                </div>
+              </div>
+            );
+          })}
+          </>
+        )}
         <div className="d-flex gap-2 justify-content-end align-items-center">
-          <div className={styles.modalConfirm} onClick={() => handleDeleteOrder()} role="presentation">Đồng ý</div>
-          <div className={styles.modalCancel} onClick={() => setShowModal(false)} role="presentation">Quay lại</div>
+          <div className={styles.modalConfirm} onClick={() => handleDeleteOrder()} role="presentation">Lưu</div>
+          <div className={styles.modalCancel} onClick={() => setShowModal({...showModal, isDetail: false, isDelete: false})} role="presentation">Hủy</div>
         </div>
       </CustomModal>
     </div>

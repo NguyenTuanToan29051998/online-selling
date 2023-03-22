@@ -54,9 +54,10 @@ type PropTypes = {
 const CheckoutBody: FC<PropTypes> = (props) => {
   const {paymentProductList} = props;
   const router = useRouter();
+  const { isCheckout } = router.query;
   const {formatNumberWithDot} = useFormat();
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [showModalOrderSuccess, setShowModalOrderSuccess] = useState<boolean>(false);
+  const [showModalOrderSuccess, setShowModalOrderSuccess] = useState<boolean>(isCheckout ? true: false);
   const [showModalSelectedDiscount, setShowModalSelectedDiscount] = useState<boolean>(false);
   const [showModalChangeAddress, setShowModalChangeAddress] = useState<boolean>(false);
   const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -96,14 +97,15 @@ const CheckoutBody: FC<PropTypes> = (props) => {
       deliveryAddress.ward,
       deliveryAddress.district,
       deliveryAddress.province,
-      transportFee/100 * totalPrice + (totalPrice < 300000 ? 0 : ((totalPrice >= 300000 && totalPrice <=500000) ? 10000 : 20000)),
+      // transportFee/100 * totalPrice + (totalPrice < 300000 ? 0 : ((totalPrice >= 300000 && totalPrice <=500000) ? 10000 : 20000)),
       discount.decreasePercent,
+      discount.id,
       isPaypalPayment ? 'online' : 'cash',
     ).then((res) =>{
       if (isPaypalPayment) {
         window.open(res.data.message, "_blank");
       } else {
-        setShowModalOrderSuccess(true);
+        // setShowModalOrderSuccess(true);
       }
       setShowModal(false);
     }).catch(err => console.log(err));
@@ -154,7 +156,7 @@ const CheckoutBody: FC<PropTypes> = (props) => {
   useEffect(() => {
     let total = 0;
     paymentProductList.cartDetail.cartItems.map((item) => {
-      total = total + item.newPrice;
+      total = total + item.newPrice*item.quantity;
     });
     setTotalPrice(total);
   }, []);
@@ -339,7 +341,7 @@ const CheckoutBody: FC<PropTypes> = (props) => {
           </div>
           <div className={styles.couponBlock}>
             <div className={styles.blockHeader}>
-              <div className={styles.blockHeaderTitle}>Tiki Khuyến Mãi</div>
+              <div className={styles.blockHeaderTitle}>Chọn Mã khuyến mãi</div>
               <div className={styles.blockHeaderUsage}><span>Chỉ chọn 1</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" className="info-icon" aria-describedby="popup-22">
                   <path d="M12.75 11.25C12.75 10.8358 12.4142 10.5 12 10.5C11.5858 10.5 11.25 10.8358 11.25 11.25V15.75C11.25 16.1642 11.5858 16.5 12 16.5C12.4142 16.5 12.75 16.1642 12.75 15.75V11.25Z" fill="#787878"></path><path d="M12.75 8.25C12.75 8.66421 12.4142 9 12 9C11.5858 9 11.25 8.66421 11.25 8.25C11.25 7.83579 11.5858 7.5 12 7.5C12.4142 7.5 12.75 7.83579 12.75 8.25Z" fill="#787878"></path>
@@ -394,7 +396,7 @@ const CheckoutBody: FC<PropTypes> = (props) => {
           <div className={styles.modalCancel} onClick={() => setShowModal(false)} role="presentation">hủy</div>
         </div>
       </CustomModal>
-      <CustomModal size="lg" title="Địa chỉ giao hàng" show={showModalChangeAddress} setShow={setShowModalChangeAddress}>
+      <CustomModal size="xl" title="Địa chỉ giao hàng" show={showModalChangeAddress} setShow={setShowModalChangeAddress}>
         <p className={styles.modalDecs}>Hãy chọn địa chỉ nhận hàng để được dự báo thời gian giao hàng cùng phí đóng gói, vận chuyển một cách chính xác nhất.</p>
         <div>
           <div className="mb-3">
@@ -457,7 +459,7 @@ const CheckoutBody: FC<PropTypes> = (props) => {
                 />
                 <div className="d-flex gap-5">
                   <Image
-                    src={`/assets/tiki.png`}
+                    src={`/assets/logoweb.png`}
                     width={60}
                     height={40}
                     alt="tiki"

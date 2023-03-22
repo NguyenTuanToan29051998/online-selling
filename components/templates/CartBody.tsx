@@ -310,7 +310,7 @@ const CartBody: FC<PropTypes> = (props) => {
             <div className={styles.pricesTotal}>
               <span className={styles.pricesText}>Tổng tiền</span>
               <div className={styles.pricesContent}>
-                <span className={styles.pricesFinal}>{formatNumberWithDot(totalPrice + transportFee)}đ</span>
+                <span className={styles.pricesFinal}>{formatNumberWithDot(totalPrice - transportFee)}đ</span>
                 <span className={styles.vat}>(Đã bao gồm VAT nếu có)</span>
               </div>
             </div>
@@ -331,7 +331,7 @@ const CartBody: FC<PropTypes> = (props) => {
           <div className={styles.modalCancel} onClick={() => setShowModalSelectedProduct(false)} role="presentation">Ok, đã hiểu</div>
         </div>
       </CustomModal>
-      <CustomModal size="lg" title="Địa chỉ giao hàng" show={showModalChangeAddress} setShow={setShowModalChangeAddress}>
+      <CustomModal size="sm" title="Địa chỉ giao hàng" show={showModalChangeAddress} setShow={setShowModalChangeAddress}>
         <p className={styles.modalDecs}>Hãy chọn địa chỉ nhận hàng để được dự báo thời gian giao hàng cùng phí đóng gói, vận chuyển một cách chính xác nhất.</p>
         <div>
           <div className="mb-3">
@@ -388,7 +388,7 @@ const CartBody: FC<PropTypes> = (props) => {
                 />
                 <div className="d-flex gap-5">
                   <Image
-                    src={`/assets/tiki.png`}
+                    src={`/assets/logoweb.png`}
                     width={60}
                     height={40}
                     alt="tiki"
