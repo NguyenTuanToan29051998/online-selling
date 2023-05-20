@@ -162,6 +162,10 @@ const CheckoutBody: FC<PropTypes> = (props) => {
   }, []);
 
   useEffect(() => {
+    if (isCheckout) setShowModalOrderSuccess(true);
+  }, [isCheckout]);
+
+  useEffect(() => {
     const headers = {
       'shop_id': '120837',
       'token': 'f1e25a8c-6ec0-11ed-b62e-2a5743127145'

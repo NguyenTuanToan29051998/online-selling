@@ -3,11 +3,11 @@ import { FC, useEffect, useState, MouseEvent } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../styles/components/templates/OrderBody.module.scss';
 import { OrderApiManagement } from '../../api-clients/order';
-import { OrderType } from '@/models/order';
+import { OrderType, billDetailType } from '@/models/order';
 import CustomModal from '../organisms/CustomModal';
 import Image from 'next/image';
 import useFormat from '../../hooks/useFormat';
-import { addIcon, deleteIcon, removeIcon } from '../../public/icons';
+import { addIcon, deleteIcon, editIcon, removeIcon } from '../../public/icons';
 
 export type ModalType = {
   isDelete: boolean,
@@ -23,6 +23,7 @@ const OrderBody: FC<PropTypes> = () => {
   const { formatNumberWithDot } = useFormat();
   const [numberSelectedTab, setNumberSelectedtab] = useState<number>(0);
   const [orderHistoryList, setOrderHistoryList] = useState<OrderType[]>([]);
+  const [itemOderInfo, setItemOderInfo] = useState<billDetailType[]>([]);
   const [showModal, setShowModal] = useState<ModalType>({
     isDelete: false,
     isDetail: false,
@@ -36,6 +37,7 @@ const OrderBody: FC<PropTypes> = () => {
 
   const handleOpenModal = (isDel: boolean, billId: number) => {
     setBillId(billId);
+    setItemOderInfo(orderHistoryList?.find(item => item.id === billId)?.billDetails!);
     setShowModal({...showModal, isDelete: isDel, isDetail: !isDel });
   };
 
@@ -191,9 +193,21 @@ const OrderBody: FC<PropTypes> = () => {
                         })}
                       </td>
                       <td>
-                        <div className={`${styles.center} gap-3`}>
-                          <td className={`${numberSelectedTab === 1 && styles.mw50 || styles.minW75}`} onClick={() => handleOpenModal(false, item.id)} role="presentation">{(numberSelectedTab === 1 && 'Sửa') || (numberSelectedTab === 3 && 'Hoàn trả')}</td>
-                          <td className={`${numberSelectedTab === 1 && styles.mw50 || styles.minW75}`} onClick={() => handleOpenModal(true, item.id)} role="presentation">{(numberSelectedTab === 1 && 'Xóa') ||  (numberSelectedTab === 3 && 'Đánh giá')}</td>
+                        <div className={`${styles.center} gap-4`}>
+                          <td
+                            className={`${numberSelectedTab === 1 && styles.mw50 || styles.minW75}`}
+                            onClick={() => handleOpenModal(false, item.id)}
+                            role="presentation"
+                          >
+                            {(numberSelectedTab === 1 && <div>{editIcon}</div>) || (numberSelectedTab === 3 && 'Hoàn trả')}
+                          </td>
+                          <td
+                            className={`${numberSelectedTab === 1 && styles.mw50 || styles.minW75}`}
+                            onClick={() => handleOpenModal(true, item.id)}
+                            role="presentation"
+                          >
+                              {(numberSelectedTab === 1 && <div>{deleteIcon}</div>) || (numberSelectedTab === 3 && 'Đánh giá')}
+                          </td>
                         </div>
                       </td>
                     </tr>
@@ -204,12 +218,17 @@ const OrderBody: FC<PropTypes> = () => {
           )}
         </div>
       </div>
-      <CustomModal size="md" title={showModal.isDelete ? "Hủy đơn hàng" : "Sửa đơn hàng"} show={showModal.isDetail || showModal.isDelete} setShow={setShowModal}>
+      <CustomModal
+        size={showModal.isDelete ? "xl" : "md"}
+        title={showModal.isDelete ? "Hủy đơn hàng" : "Sửa đơn hàng"}
+        show={showModal.isDetail || showModal.isDelete}
+        setShow={setShowModal}
+      >
         {showModal.isDelete ? (
           <p className={styles.modalDecs}>Xác nhận hủy đơn hàng</p>
         ) : (
           <>
-            {(orderHistoryList[0]?.billDetails || []).map((item, index) => {
+            {itemOderInfo?.map((item, index) => {
             return (
               <div className={styles.intened} key={Math.random()}>
                 <div className="d-flex align-items-center">
@@ -242,6 +261,37 @@ const OrderBody: FC<PropTypes> = () => {
                     <div className={styles.realPrice}>{formatNumberWithDot(item.productDetail.product.price)} ₫</div>
                     <del className={styles.discountPrice}>{formatNumberWithDot(item.productDetail.product.price)} ₫</del>
                   </div>
+                  {/* <CustomModal title="Khuyến mãi" show={showModalSelectedDiscount} setShow={setShowModalSelectedDiscount}>
+                    <p className={styles.modalDecs}>Chọn mã giảm giá</p>
+                    <div className={styles.couponList}>
+                      {cartDetail.discounts.map((item, index) => {
+                        return (
+                          <div key={index} className="d-flex gap-4 align-items-center">
+                            <input
+                              type="radio"
+                              className={styles.radio}
+                              onClick={() => handleSelectedDiscount(item.discount.id, item.discount.decreasePercent, item.discount.unit)}
+                            />
+                            <div className="d-flex gap-5">
+                              <Image
+                                src={`/assets/logoweb.png`}
+                                width={60}
+                                height={40}
+                                alt="tiki"
+                              />
+                              <div>
+                                <div>{item.discount.discountName}</div>
+                                Giảm {item.discount.decreasePercent}{item.discount.unit.includes("percent") ? "%" : "K"}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="d-flex gap-2 justify-content-end align-items-center">
+                      <div className={styles.modalCancel} onClick={() => handleSaveDiscount()} role="presentation">Đồng ý</div>
+                    </div>
+                  </CustomModal> */}
                   <div className={styles.productQty}>
                     <div className={styles.groupnput}>
                       <div
@@ -270,7 +320,7 @@ const OrderBody: FC<PropTypes> = () => {
           </>
         )}
         <div className="d-flex gap-2 justify-content-end align-items-center">
-          <div className={styles.modalConfirm} onClick={() => handleDeleteOrder()} role="presentation">Lưu</div>
+          <div className={styles.modalConfirm} onClick={() => handleDeleteOrder()} role="presentation">Xác nhận</div>
           <div className={styles.modalCancel} onClick={() => setShowModal({...showModal, isDetail: false, isDelete: false})} role="presentation">Hủy</div>
         </div>
       </CustomModal>

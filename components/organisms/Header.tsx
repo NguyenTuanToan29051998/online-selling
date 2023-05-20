@@ -56,7 +56,7 @@ const Header: FC<PropsType> = (props) => {
           <div className={styles.leftArea}>
             <div className={styles.leftAreaMainlogo} onClick={() => router.push('/home')} role="presentation">
               <Image
-                src="/assets/logoweb.png"
+                src="/assets/logo.png"
                 width={66}
                 height={40}
                 alt="main-logo"

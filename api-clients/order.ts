@@ -11,7 +11,7 @@ export const OrderApiManagement = {
   },
 
   deleteOrderHistoryPending(billDetail: number) {
-    return axiosClient.get(`api/bill/delivering/delete?billdetail_id=${billDetail}`);
+    return axiosClient.delete(`api/bill/pending/delete?bill_id=${billDetail}`);
   },
 
   getOrderHistoryDelivering(userId: string) {
