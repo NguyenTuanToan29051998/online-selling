@@ -16,6 +16,7 @@ export type ProductDetailType = {
       image: string,
     }[],
   }[],
+  relatedProducts: ProductOverviewType[];
 }
 
 export type ProductOverviewType = {
@@ -42,6 +43,7 @@ export type CategoryType = {
   name: string,
   note: string,
   status: number,
+  image?: string,
 }
 
 

@@ -11,7 +11,7 @@ export const OrderApiManagement = {
   },
 
   deleteOrderHistoryPending(billDetail: number) {
-    return axiosClient.get(`api/bill/delivering/delete?billdetail_id=${billDetail}`);
+    return axiosClient.delete(`api/bill/pending/delete?bill_id=${billDetail}`);
   },
 
   getOrderHistoryDelivering(userId: string) {
@@ -28,6 +28,10 @@ export const OrderApiManagement = {
 
   getOrderHistoryReturn(userId: string) {
     return axiosClient.get(`api/bill/historyAdmin/return?user_id=${userId}`);
+  },
+
+  getBillDetail(bill_id: number) {
+    return axiosClient.get(`api/bill/getbilldetails?bill_id=${bill_id}`);
   },
 
 };

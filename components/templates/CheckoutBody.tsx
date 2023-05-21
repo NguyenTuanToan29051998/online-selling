@@ -103,9 +103,11 @@ const CheckoutBody: FC<PropTypes> = (props) => {
       isPaypalPayment ? 'online' : 'cash',
     ).then((res) =>{
       if (isPaypalPayment) {
-        window.open(res.data.message, "_blank");
+        window.location.href = res.data.message;
+        // window.open(res.data.message, "_blank");
       } else {
         // setShowModalOrderSuccess(true);
+        router.push('checkout?isCheckout=true');
       }
       setShowModal(false);
     }).catch(err => console.log(err));
@@ -162,6 +164,10 @@ const CheckoutBody: FC<PropTypes> = (props) => {
   }, []);
 
   useEffect(() => {
+    if (isCheckout) setShowModalOrderSuccess(true);
+  }, [isCheckout]);
+
+  useEffect(() => {
     const headers = {
       'shop_id': '120837',
       'token': 'f1e25a8c-6ec0-11ed-b62e-2a5743127145'
@@ -189,7 +195,7 @@ const CheckoutBody: FC<PropTypes> = (props) => {
       'shop_id': '120837',
       'token': 'f1e25a8c-6ec0-11ed-b62e-2a5743127145'
     };
-    axios.get(`https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=53321&insurance_value=100000&from_district_id=3440&to_district_id=${deliveryAddress.idDistrict}&to_ward_code=${deliveryAddress.idWard}&height=1&length=15&weight=300&width=15`, { headers: headers })
+    axios.get(`https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=53320&insurance_value=100000&from_district_id=3440&to_district_id=${deliveryAddress.idDistrict}&to_ward_code=${deliveryAddress.idWard}&height=1&length=15&weight=300&width=15`, { headers: headers })
       .then(res => {
         setTransportFee(res.data.data.total);
       })
@@ -478,7 +484,7 @@ const CheckoutBody: FC<PropTypes> = (props) => {
         </div>
       </CustomModal>
       <CustomModal title="Đặt hàng thành công" show={showModalOrderSuccess} setShow={setShowModalOrderSuccess}>
-        <p className={styles.modalDecs}>Đơn hàng của bạn sẽ được giao trước ngày 10/02</p>
+        <p className={styles.modalDecs}>Đơn hàng của bạn đang chờ được xác nhận</p>
         <div className="d-flex gap-2 justify-content-end align-items-center">
           <div className={styles.modalConfirm} onClick={() => router.push('/order')} role="presentation">Xem chi tiết</div>
           <div className={styles.modalCancel} onClick={() => router.push('/home')} role="presentation">Quay lại tang chủ</div>

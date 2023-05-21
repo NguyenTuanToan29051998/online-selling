@@ -6,15 +6,17 @@ import axios from 'axios';
 import { BannerType } from '@/models/banner';
 import CustomLoading from '../../components/molecules/CustomLoading';
 import { homeApiManagement } from '../../api-clients/home';
-import { ProductOverviewType } from '@/models/product';
+import { CategoryType, ProductOverviewType } from '@/models/product';
 import { CartApiManagement } from '../../api-clients/cart';
 
 const Home: NextPageWithLayout = () => {
 
   const [productList, setProductList] = useState<ProductOverviewType[]>([]);
   const [topBuyList, setTopBuyList] = useState<ProductOverviewType[]>([]);
+  const [topLikeList, setTopLikeList] = useState<ProductOverviewType[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [pageCount, setPageCount] = useState<number>(0);
+  const [categoryList, setCategotyList] = useState<CategoryType[]>([]);
 
   useEffect(() => {
     let userInfo: { id: string; };
@@ -25,6 +27,8 @@ const Home: NextPageWithLayout = () => {
       setProductList(res.data.allProducts.content);
       setTopBuyList(res.data.topBuy);
       setPageCount(res.data.allProducts.totalElements);
+      setCategotyList(res.data.categories);
+      setTopLikeList(res.data.topLike);
     }).catch(err => console.log(err));
   }, [currentPage]);
 
@@ -47,6 +51,10 @@ const Home: NextPageWithLayout = () => {
       pageCount={pageCount}
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
+      categoryList={categoryList}
+      setCategotyList={setCategotyList}
+      topLikeList={topLikeList}
+      setTopLikeList={setTopLikeList}
     />
   );
 };

@@ -8,6 +8,8 @@ import { ProductDetailType } from '@/models/product';
 import { ProductDetailApiManagement } from '../../api-clients/product-detail';
 import { CartApiManagement } from '../../api-clients/cart';
 import useFormat from '../../hooks/useFormat';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type PropTypes = {
   product: ProductDetailType;
@@ -36,6 +38,7 @@ const ProductDetailBody: FC<PropTypes> = (props) => {
     if (!userInfo.id) {
       return router.push('/');
     }
+    if (!availableQuantity) return;
     CartApiManagement.addProductToCart(userInfo.id, selectedColor, selectedSize, product.product.product.id, quantityProduct).then(res => {
     }).catch(err => console.log(err));
     router.push('/product/1?isShowNoti=true');
@@ -44,6 +47,14 @@ const ProductDetailBody: FC<PropTypes> = (props) => {
     setSelectedSize(size);
     setIsSelectedColor(false);
     setIsSelectedSize(true);
+  };
+
+  const handleTotalProduct = (totalProduct: string) => {
+    if (+totalProduct > availableQuantity) {
+      toast("số lượng vượt quá số sản phẩm còn lại!");
+      return;
+    }
+    setQuantityProduct(+totalProduct);
   };
 
   useEffect(() => {
@@ -237,7 +248,7 @@ const ProductDetailBody: FC<PropTypes> = (props) => {
                         onClick={() => setQuantityProduct(quantityProduct === 1 ? quantityProduct : quantityProduct - 1)}
                         role="presentation"
                       >{removeIcon}</div>
-                      <input type="text" value={quantityProduct} className={styles.inputCart} onChange={(e) => setQuantityProduct(Number(e.target.value))} />
+                      <input type="text" value={quantityProduct} className={styles.inputCart} onChange={(e) => handleTotalProduct(e.target.value)} />
                       <div
                         className={`${styles.addCart} ${styles.disable}`}
                         onClick={() => setQuantityProduct(quantityProduct === availableQuantity ? quantityProduct : quantityProduct + 1)}
@@ -245,7 +256,7 @@ const ProductDetailBody: FC<PropTypes> = (props) => {
                       >{addIcon}</div>
                     </div>
                   </div>
-                  <div className={styles.btnAddToCart} onClick={() => handleAddToCart()} role="presentation">Chọn mua</div>
+                  <div className={`${availableQuantity === 0 ?  styles.disableAddToCart : styles.btnAddToCart}` } onClick={() => handleAddToCart()} role="presentation">Chọn mua</div>
                 </div>
               </div>
             </div>
@@ -299,30 +310,49 @@ const ProductDetailBody: FC<PropTypes> = (props) => {
       <div className={styles.sameProduct}>
         <div className={styles.title}>Sản Phẩm Tương Tự</div>
         <div className={styles.productList}>
-          {[...Array(6)].map((item, index) => (
-            <div key={index} className={styles.productItem} onClick={() => router.push('/product/1')} role="presentation">
-              <div>
-                <div className={styles.official} style={{ backgroundImage: `url("/assets/brand-2.jpg")` }} />
-                <div className={styles.thumbnail} style={{ backgroundImage: `url("/assets/product-1.jpg")` }} />
-              </div>
-              <div className={styles.info}>
-                <div className={`${styles.priceDiscount} ${styles.hasDiscount}`}>
-                  <div className="price-discount__price">{product.product.newPrice} ₫</div>
-                  <div className="price-discount__discount">-51%</div>
-                </div>
-                <div className={styles.name}>
-                  <h3>Áo Khoác Gió Thể Thao Nam 5S INSPIRATION (4 Màu), Công Nghệ Cao Cấp, Chống Thấm, Cản Bụi, Cản Gió Cực Ấm (AKG22001)</h3>
-                </div>
-                <div className="d-flex gap-2">
-                  <div className={styles.fullRating}>
-                    <span className={styles.point}>4.2</span>
-                    <div className="d-flex">{starIcon('14', '#fdd836')}</div>
-                  </div>
-                  <div className={styles.bisectingLine} />
-                  <span className={styles.quantity}>Đã bán 20</span>
-                </div>
-              </div>
-            </div>
+          {product.relatedProducts.map((item, index) => (
+             <div className={styles.productItem} onClick={() => router.push(`/product/${item.product.id}`)} role="presentation" key={index}>
+             <div className="position-relative">
+               <div className={styles.official} style={{ backgroundImage: `url("/assets/brand-2.jpg")` }} />
+               <div className={styles.thumbnail} style={{ backgroundImage: `url("/assets/${item.product.image}")` }} />
+               {/* <div className={styles.addToFavorites} onClick={(e) => handleAddToFavorite(e, item.product.id)} role="presentation">{item.like ? favoriteRedIcon : favoriteGrayIcon}</div> */}
+             </div>
+             <div className={styles.info}>
+               <div className={styles.name}>
+                 <h3>{item.product.name}</h3>
+               </div>
+               {!!item.boughtQuantity ? (
+                 <div className="d-flex gap-2">
+                   <div className={styles.fullRating}>
+                     <span className={styles.point}>{item.rating}</span>
+                     <div className="d-flex">{starIcon('14', '#fdd836')}</div>
+                   </div>
+                   <div className={styles.bisectingLine} />
+                   <span className={styles.quantity}>Đã bán {item.boughtQuantity}</span>
+                 </div>
+               ) : (
+                 <div className={styles.emptyRating} />
+               )}
+               <div className={`${styles.priceDiscount} ${styles.hasDiscount}`}>
+                 <div className="price-discount__price">{!item.decreasePercent ? formatNumberWithDot(item.newPrice) : formatNumberWithDot(item.product.price)} đ</div>
+                 {!!item.decreasePercent && (
+                   <div className="price-discount__discount">-51%</div>
+                 )}
+               </div>
+               {/* <div className={styles.badgeUnderPrice}>Tặng tới 1000 ASA (224k ₫) <br />≈ 1.0% hoàn tiền</div> */}
+               <div className={styles.badgeUnderRating}>
+                 <div className={styles.item}>
+                   <span>Freeship+</span>
+                 </div>
+                 {/* <div className={styles.item}>
+               <span>Trả góp</span>
+             </div> */}
+               </div>
+             </div>
+             {/* <div className={styles.badgeDelivery}>
+           <span>Giao thứ 3, ngày 03/01</span>
+         </div> */}
+           </div>
           ))}
         </div>
       </div>
@@ -546,6 +576,7 @@ const ProductDetailBody: FC<PropTypes> = (props) => {
               </div>
             </div>
           ))}
+          <ToastContainer />
           <PaginationSection currentPage={currentPage} pageCount={pageCount} setCurrentPage={setCurrentPage} />
           <div className="pb-5" />
         </div>
