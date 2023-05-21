@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export type OrderType = {
   id: number,
   total: number,
@@ -35,4 +37,18 @@ export type billDetailType = {
       },
     },
   },
+}
+
+export type ColorBillDetail = {
+  billDetailId: number;
+  colorOrderDTOs: {
+    color: string,
+    image: string,
+    sizeQuantityDTOs: [
+      {
+        size: string,
+        quantity: number
+      }
+    ]
+  }[]
 }

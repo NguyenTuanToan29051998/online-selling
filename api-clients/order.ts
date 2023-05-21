@@ -30,4 +30,8 @@ export const OrderApiManagement = {
     return axiosClient.get(`api/bill/historyAdmin/return?user_id=${userId}`);
   },
 
+  getBillDetail(bill_id: number) {
+    return axiosClient.get(`api/bill/getbilldetails?bill_id=${bill_id}`);
+  },
+
 };

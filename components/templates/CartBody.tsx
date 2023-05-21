@@ -10,6 +10,8 @@ import { CartApiManagement } from '../../api-clients/cart';
 import CustomModal from '../organisms/CustomModal';
 import CustomDropdown from '../atoms/dropdowns/Dropdown';
 import { NavDropdown } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type Discount = {
   id: number,
@@ -57,7 +59,21 @@ const CartBody: FC<PropTypes> = (props) => {
       setShowModalDelete(true);
       return;
     }
-    CartApiManagement.updateProductInCart(cartId, isIncrease ? quantity + 1 : quantity -1).then((_) => {
+    CartApiManagement.updateProductInCart(cartId, isIncrease ? quantity + 1 : quantity -1).then((resCart) => {
+      if (!resCart.data.success) {
+        toast(resCart.data.message);
+      }
+      CartApiManagement.getCartDetail(userInfo.id).then((res) => {
+        setCartDetail(res.data);
+      }).catch(err => console.log(err));
+    }).catch(err => console.log(err));
+  };
+
+  const handleUpdateQuantity = (cartId: number, quantity: string,) => {
+    CartApiManagement.updateProductInCart(cartId, +quantity).then((resCart) => {
+      if (!resCart.data.success) {
+        toast(resCart.data.message);
+      }
       CartApiManagement.getCartDetail(userInfo.id).then((res) => {
         setCartDetail(res.data);
       }).catch(err => console.log(err));
@@ -243,7 +259,7 @@ const CartBody: FC<PropTypes> = (props) => {
                         onClick={() => handleUpdateCart(item.id, item.quantity, false)}
                         role="presentation"
                       >{removeIcon}</div>
-                      <input type="text" value={item.quantity} className={styles.inputCart} />
+                      <input type="text" value={item.quantity} className={styles.inputCart} onChange={(e) => handleUpdateQuantity(item.id, e.target.value)}  />
                       <div
                         className={`${styles.addCart} ${styles.disable}`}
                         onClick={() => handleUpdateCart(item.id, item.quantity, true)}
@@ -406,6 +422,7 @@ const CartBody: FC<PropTypes> = (props) => {
           <div className={styles.modalCancel} onClick={() => handleSaveDiscount()} role="presentation">Đồng ý</div>
         </div>
       </CustomModal>
+      <ToastContainer />
     </div>
   );
 };

@@ -8,7 +8,7 @@ import CustomContainer from '../molecules/CustomContainer';
 import Image from 'next/image';
 import { favoriteGrayIcon, favoriteRedIcon, starIcon } from '../../public/icons';
 import PaginationSection from '../organisms/PaginationSection';
-import { ProductOverviewType } from '@/models/product';
+import { CategoryType, ProductOverviewType } from '@/models/product';
 import useFormat from '../../hooks/useFormat';
 import { FavoriteApiManagement } from '../../api-clients/favorite';
 import { homeApiManagement } from '../../api-clients/home';
@@ -20,11 +20,15 @@ type PropTypes = {
   setTopBuyList: Dispatch<SetStateAction<ProductOverviewType[]>>,
   pageCount: number,
   currentPage: number,
-  setCurrentPage: Dispatch<SetStateAction<number>>
+  setCurrentPage: Dispatch<SetStateAction<number>>,
+  categoryList: CategoryType[],
+  setCategotyList: Dispatch<SetStateAction<CategoryType[]>>,
+  topLikeList: ProductOverviewType[],
+  setTopLikeList: Dispatch<SetStateAction<ProductOverviewType[]>>,
 };
 
 const HomeBody: FC<PropTypes> = (props) => {
-  const {productList, setProductList, pageCount, currentPage, setCurrentPage, topBuyList, setTopBuyList} = props;
+  const {productList, setProductList, pageCount, currentPage, setCurrentPage, topBuyList, setTopBuyList, categoryList, topLikeList} = props;
   const router = useRouter();
   const {formatNumberWithDot} = useFormat();
 
@@ -134,7 +138,12 @@ const HomeBody: FC<PropTypes> = (props) => {
                 </div>
               </div>
               <div className={`row ${styles.homeBrandList}`}>
-                <div className={`col-2`}>
+                {categoryList.map((item) => (
+                  <div className={`col-2`} key={item.id}>
+                    <div className={styles.itembrand} style={{backgroundImage: `url(${item.image || '/assets/brand-1.jpg'})`}} />
+                  </div>
+                ))}
+                {/* <div className={`col-2`}>
                   <div className={styles.itembrand} />
                 </div>
                 <div className={`col-2`}>
@@ -148,16 +157,13 @@ const HomeBody: FC<PropTypes> = (props) => {
                 </div>
                 <div className={`col-2`}>
                   <div className={styles.itembrand} />
-                </div>
-                <div className={`col-2`}>
-                  <div className={styles.itembrand} />
-                </div>
+                </div> */}
               </div>
             </div>
 
             <div className={styles.highlights}>
               <div className={styles.highlightsTitle}>
-                <div>Sản phẩm nổi bật</div>
+                <div>Sản phẩm bán chạy</div>
               </div>
               <div className={`row ${styles.highlightsList}`}>
                 {(topBuyList || []).map((item, index) => (
@@ -169,21 +175,23 @@ const HomeBody: FC<PropTypes> = (props) => {
                     />
                   </div>
                 ))}
-                {/* <div className={`col-2`}>
-                  <div className={styles.itemHighlights} />
-                </div>
-                <div className={`col-2`}>
-                  <div className={styles.itemHighlights} />
-                </div>
-                <div className={`col-2`}>
-                  <div className={styles.itemHighlights} />
-                </div>
-                <div className={`col-2`}>
-                  <div className={styles.itemHighlights} />
-                </div>
-                <div className={`col-2`}>
-                  <div className={styles.itemHighlights} />
-                </div> */}
+              </div>
+            </div>
+
+            <div className={styles.highlights}>
+              <div className={styles.highlightsTitle}>
+                <div>Sản phẩm được yêu thích</div>
+              </div>
+              <div className={`row ${styles.highlightsList}`}>
+                {(topLikeList || []).slice(0, 6).map((item, index) => (
+                  <div className={`col-2`} key={index}>
+                    <div
+                      className={styles.itemHighlights}
+                      style={{ backgroundImage: `url("/assets/${item.product.image}")` }}
+                      onClick={() => router.push(`/product/${item.product.id}`)} role="presentation"
+                    />
+                  </div>
+                ))}
               </div>
             </div>
 
