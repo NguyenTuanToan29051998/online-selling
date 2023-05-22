@@ -10,6 +10,7 @@ import { CartApiManagement } from '../../api-clients/cart';
 import useFormat from '../../hooks/useFormat';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { NUMBER_REG } from '../../public/const';
 
 type PropTypes = {
   product: ProductDetailType;
@@ -50,8 +51,9 @@ const ProductDetailBody: FC<PropTypes> = (props) => {
   };
 
   const handleTotalProduct = (totalProduct: string) => {
+    if (!NUMBER_REG.test(totalProduct)) return;
     if (+totalProduct > availableQuantity) {
-      toast("số lượng vượt quá số sản phẩm còn lại!");
+      toast.error("số lượng vượt quá số sản phẩm còn lại!");
       return;
     }
     setQuantityProduct(+totalProduct);

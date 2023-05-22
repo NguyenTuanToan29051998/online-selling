@@ -34,4 +34,16 @@ export const OrderApiManagement = {
     return axiosClient.get(`api/bill/getbilldetails?bill_id=${bill_id}`);
   },
 
+  getDiscountBillDetail(idProductListInBill: Array<number>, idUser: number, totalBill: number) {
+    return axiosClient.get(`api/bill/pending/discount?product_ids=${idProductListInBill}&user=${idUser}&total=${totalBill}`);
+  },
+
+  updateBill(data: any) {
+    return axiosClient.post(`/api/bill/pending/update`, data);
+  },
+
+  deleteItemInBill (billIdArr: Array<number>) {
+    return axiosClient.delete(`/api/bill/pending/deletedetail?bill_detail_ids=${billIdArr}`);
+  }
+
 };

@@ -56,9 +56,9 @@ const Footer: FC<PropsType> = (props) => {
       <div className={styles.leftArea}>
         <div className={`${styles.lineLogo}`}>
           <img
-            src="/assets/logoweb.png"
+            src="/assets/logo.png"
             alt="logoBox"
-            style={{height: '140px'}}
+            style={{height: '150px'}}
           />
         </div>
         <div className={`${styles.lineContent}`}>
