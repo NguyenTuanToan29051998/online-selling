@@ -1,8 +1,49 @@
 .orderBody {
-    width: 1440px;
-    padding-bottom: 3rem;
-    padding: 0 24px;
-    margin: 0 auto;
+  width: 1440px;
+  padding-bottom: 3rem;
+  padding: 0 24px;
+  margin: 0 auto;
+
+  .info {
+    flex: 1 1 0%;
+    font-size: 13px;
+    line-height: 15px;
+    color: rgb(51, 51, 51);
+    font-weight: 300;
+
+    strong {
+      font-size: 16px;
+      line-height: 19px;
+      font-weight: 400;
+      display: block;
+      margin: 4px 0px 0px;
+
+    }
+  }
+
+  .account {
+    margin: 1rem 0;
+    padding: 0px;
+    list-style: none;
+    // font-size: 16px;
+    .isActive {
+      background-color: rgb(235, 235, 240);
+      color: rgb(0, 0, 0);
+    }
+    li {
+      display: flex;
+      font-size: 14px;
+      -webkit-box-align: center;
+      align-items: center;
+      padding: 7px 18px;
+      color: rgb(74, 74, 74);
+      cursor: pointer;
+      &:hover {
+        background-color: rgb(235, 235, 240);
+        color: rgb(0, 0, 0);
+      }
+    }
+  }
 
   .tabList {
     cursor: pointer;
@@ -33,16 +74,28 @@
 
     .rowBody {
       padding: 0 1rem !important;
+
       .image {
         width: 50px;
         height: 50px;
         background-size: cover;
       }
+
       .center {
         height: 50px;
         display: flex;
         align-items: center;
       }
+    }
+  }
+
+  .infoAccount {
+    background: rgb(255, 255, 255);
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    .itemInfo {
+      margin-top: 0.75rem;
     }
   }
 }
@@ -219,9 +272,123 @@
     text-align: center;
   }
 
+  
+
   .productremove {
     width: 50px;
     text-align: right;
     cursor: pointer;
+  }
+}
+
+.couponBlock {
+  width: 318px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  margin: 1.5rem 0;
+  position: relative;
+  padding: 16px;
+  // margin-bottom: 16px;
+  background-color: rgb(255, 255, 255);
+
+  .blockHeader {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    font-size: 13px;
+    line-height: 20px;
+    margin-bottom: 16px;
+    
+    &Title {
+      color: rgb(36, 36, 36);
+      margin: 0px;
+      text-transform: capitalize;
+      font-weight: 500;
+    }
+
+    &Usage {
+      color: rgb(120, 120, 120);
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      gap: 0.25rem;
+    }
+  }
+
+  .platformCoupon {
+    padding-top: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    -webkit-box-align: center;
+    align-items: center;
+    color: rgb(11, 116, 229);
+    font-size: 13px;
+    line-height: 20px;
+    cursor: pointer;
+  }
+}
+
+.priceSummary {
+  // margin-top: 1rem;
+  width: 318px;
+  border: 1px solid gray;
+  background: rgb(255, 255, 255);
+  border-radius: 4px;
+  padding-bottom: 8px;
+  margin-bottom: 1rem;
+  font-family: Roboto,Helvetica,Arial,sans-serif;
+  font-size: 14px;
+
+  .pricesItems {
+    padding: 17px 20px;
+    border-bottom: 1px solid rgb(244, 244, 244);
+
+    .pricesText {
+      color: rgb(128, 128, 137);
+      font-weight: normal;
+      font-size: 16px;
+    }
+
+    .pricesValue {
+      color: black;
+      font-weight: 500;
+    }
+  }
+
+  .pricesTotal {
+    padding: 17px 20px;
+    display: flex;
+    flex-wrap: nowrap;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    margin: 0px;
+
+    .pricesText {
+      color: rgb(128, 128, 137);
+      font-weight: normal;
+      font-size: 15px;
+    }
+
+    .pricesContent {
+      text-align: right;
+
+      .pricesFinal {
+        color: rgb(254, 56, 52);
+        font-size: 22px;
+        font-weight: 500;
+        text-align: right;
+      }
+
+      .vat {
+        font-weight: 300;
+        font-style: normal;
+        display: block;
+        font-size: 12px;
+        color: rgb(51, 51, 51);
+        margin-top: 3px;
+      }
+    }
   }
 }

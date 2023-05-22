@@ -13,7 +13,7 @@ import { NavDropdown } from 'react-bootstrap';
 import { CheckoutApiManagement } from '../../api-clients/checkout';
 
 type Discount = {
-  id: number,
+  id: number | null,
   name: string,
   decreasePercent: number,
   isSelected: boolean,
@@ -73,7 +73,7 @@ const CheckoutBody: FC<PropTypes> = (props) => {
     idProvince: -1,
   });
   const [discount, setDiscount] = useState<Discount>({
-    id: 0,
+    id: null,
     isSelected: false,
     type: '',
     name: '',
@@ -92,7 +92,7 @@ const CheckoutBody: FC<PropTypes> = (props) => {
   const handleCheckout = () => {
     CheckoutApiManagement.checkoutProduct(
       userInfo.id,
-      totalPrice,
+      totalPrice + transportFee - ((totalPrice >= 300000 && totalPrice <=500000) ? 10000 : (totalPrice < 300000 ? 0 : 20000)) - (discount.type.includes("percent") ? (discount.decreasePercent / 100 * totalPrice) : discount.decreasePercent),
       'Số 15',
       deliveryAddress.ward,
       deliveryAddress.district,
@@ -225,7 +225,7 @@ const CheckoutBody: FC<PropTypes> = (props) => {
                 </div>
                 <span className={styles.methodText}>{deliveryAddress.nameTransportUnit}</span>
                 <div className="d-flex align-items-center gap-1">
-                  <div className={styles.freeMoney}>-{formatNumberWithDot((totalPrice >= 300000 && totalPrice <=500000) ? 10000 : 20000)}</div>
+                  <div className={styles.freeMoney}>-{formatNumberWithDot((totalPrice >= 300000 && totalPrice <=500000) ? 10000 : (totalPrice < 300000 ? 0 : 20000))}</div>
                   <div className="d-flex">
                     <Image
                       src="/assets/freeship.png"
@@ -272,7 +272,7 @@ const CheckoutBody: FC<PropTypes> = (props) => {
                   </div>
                   <div className={styles.shippingFees}>
                     <div className={styles.originalFee}>{formatNumberWithDot(transportFee)}₫</div>
-                    <div className={styles.currentFee}>{formatNumberWithDot(transportFee - ((totalPrice >= 300000 && totalPrice <=500000) ? 10000 : 20000))} ₫</div>
+                    <div className={styles.currentFee}>{formatNumberWithDot(transportFee - ((totalPrice >= 300000 && totalPrice <=500000) ? 10000 : (totalPrice < 300000 ? 0 : 20000)))} ₫</div>
                   </div>
                 </div>
                 {(paymentProductList.cartDetail.cartItems || []).map(item => {
@@ -359,7 +359,7 @@ const CheckoutBody: FC<PropTypes> = (props) => {
               <svg className="coupon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10.2803 14.7803L14.7803 10.2803C15.0732 9.98744 15.0732 9.51256 14.7803 9.21967C14.4874 8.92678 14.0126 8.92678 13.7197 9.21967L9.21967 13.7197C8.92678 14.0126 8.92678 14.4874 9.21967 14.7803C9.51256 15.0732 9.98744 15.0732 10.2803 14.7803Z" fill="#0B74E5"></path><path d="M10.125 10.5C10.7463 10.5 11.25 9.99632 11.25 9.375C11.25 8.75368 10.7463 8.25 10.125 8.25C9.50368 8.25 9 8.75368 9 9.375C9 9.99632 9.50368 10.5 10.125 10.5Z" fill="#0B74E5"></path><path d="M15 14.625C15 15.2463 14.4963 15.75 13.875 15.75C13.2537 15.75 12.75 15.2463 12.75 14.625C12.75 14.0037 13.2537 13.5 13.875 13.5C14.4963 13.5 15 14.0037 15 14.625Z" fill="#0B74E5"></path><path fillRule="evenodd" clipRule="evenodd" d="M3.75 5.25C3.33579 5.25 3 5.58579 3 6V9.75C3 10.1642 3.33579 10.5 3.75 10.5C4.61079 10.5 5.25 11.1392 5.25 12C5.25 12.8608 4.61079 13.5 3.75 13.5C3.33579 13.5 3 13.8358 3 14.25V18C3 18.4142 3.33579 18.75 3.75 18.75H20.25C20.6642 18.75 21 18.4142 21 18V14.25C21 13.8358 20.6642 13.5 20.25 13.5C19.3892 13.5 18.75 12.8608 18.75 12C18.75 11.1392 19.3892 10.5 20.25 10.5C20.6642 10.5 21 10.1642 21 9.75V6C21 5.58579 20.6642 5.25 20.25 5.25H3.75ZM4.5 9.08983V6.75H19.5V9.08983C18.1882 9.41265 17.25 10.5709 17.25 12C17.25 13.4291 18.1882 14.5874 19.5 14.9102V17.25H4.5V14.9102C5.81181 14.5874 6.75 13.4291 6.75 12C6.75 10.5709 5.81181 9.41265 4.5 9.08983Z" fill="#0B74E5"></path>
               </svg>
-              <span>{discount.isSelected ? `Giảm ${discount.decreasePercent}${discount.type.includes("percent") ? "%" : "K"}` : "Chọn hoặc nhập Khuyến mãi khác"}</span>
+              <span>{discount.isSelected ? `Giảm ${discount.decreasePercent}${discount.type.includes("percent") ? "%" : "đ"}` : "Chọn hoặc nhập Khuyến mãi khác"}</span>
             </div>
           </div>
           <div className={styles.priceSummary}>
@@ -374,7 +374,7 @@ const CheckoutBody: FC<PropTypes> = (props) => {
               </div>
               <div className="d-flex justify-content-between mt-1">
                 <span className={styles.pricesText}>Khuyến mãi vận chuyển</span>
-                <span className={`${styles.pricesValue} ${styles.summaryValuePositive}`}>-{formatNumberWithDot((totalPrice >= 300000 && totalPrice <=500000) ? 10000 : 20000)}đ</span>
+                <span className={`${styles.pricesValue} ${styles.summaryValuePositive}`}>-{formatNumberWithDot((totalPrice >= 300000 && totalPrice <=500000) ? 10000 : (totalPrice < 300000 ? 0 : 20000))}đ</span>
               </div>
               {discount.decreasePercent !== 0 && (
                 <div className="d-flex justify-content-between mt-1">
@@ -387,7 +387,7 @@ const CheckoutBody: FC<PropTypes> = (props) => {
               <span className={styles.pricesText}>Tổng tiền</span>
               <div className={styles.pricesContent}>
                 <span className={styles.pricesFinal}>
-                  {formatNumberWithDot(totalPrice + transportFee - ((totalPrice >= 300000 && totalPrice <=500000) ? 10000 : 20000) - (discount.type.includes("percent") ? (discount.decreasePercent / 100 * totalPrice) : discount.decreasePercent))}đ</span>
+                  {formatNumberWithDot(totalPrice + transportFee - ((totalPrice >= 300000 && totalPrice <=500000) ? 10000 : (totalPrice < 300000 ? 0 : 20000)) - (discount.type.includes("percent") ? (discount.decreasePercent / 100 * totalPrice) : discount.decreasePercent))}đ</span>
                 <span className={styles.vat}>(Đã bao gồm VAT nếu có)</span>
               </div>
             </div>
@@ -457,22 +457,23 @@ const CheckoutBody: FC<PropTypes> = (props) => {
         <div className={styles.couponList}>
           {paymentProductList.discounts.map((item, index) => {
             return (
-              <div key={index} className="d-flex gap-4 align-items-center">
+              <div key={index} className="d-flex gap-4 align-items-center mt-3">
                 <input
                   type="radio"
                   className={styles.radio}
                   onClick={() => handleSelectedDiscount(item.discount.id, item.discount.decreasePercent, item.discount.unit)}
+                  checked={item.discount.id === discount.id}
                 />
                 <div className="d-flex gap-5">
                   <Image
-                    src={`/assets/logoweb.png`}
+                    src={`/assets/logo.png`}
                     width={60}
                     height={40}
                     alt="tiki"
                   />
                   <div>
                     <div>{item.discount.discountName}</div>
-                    Giảm {item.discount.decreasePercent}{item.discount.unit.includes("percent") ? "%" : "K"}
+                    Giảm {item.discount.decreasePercent}{item.discount.unit.includes("percent") ? "%" : "đ"}
                   </div>
                 </div>
               </div>

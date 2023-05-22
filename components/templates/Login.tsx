@@ -2,10 +2,11 @@ import type { NextPage } from 'next';
 import styles from '../../styles/Login.module.scss';
 import { useRouter } from 'next/router';
 import useTrans from '../../hooks/useTrans';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Login } from '@/models/login';
 import { LoginApiManagement } from '../../api-clients/login';
 import axios from 'axios';
+import InputField from '../atoms/inputs/InputField';
 
 const Login: NextPage = () => {
   const router = useRouter();
@@ -18,7 +19,9 @@ const Login: NextPage = () => {
 
   const handleLogin = () => {
     setShowValidate(true);
-    console.log(loginInfo, 'x');
+    if (!loginInfo.username.trim()
+      || !loginInfo.password.trim()
+    ) return;
 
     if (!loginInfo.username || !loginInfo.password) return;
     const headers = {
@@ -35,6 +38,11 @@ const Login: NextPage = () => {
       .catch(error => console.log(error));
   };
 
+  const handleChangeForm = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setLoginInfo({ ...loginInfo, [name]: value });
+  };
+
   return (
     <div className={styles.loginBody}>
       <div className="container">
@@ -44,32 +52,34 @@ const Login: NextPage = () => {
               <div className={`${styles.myform}`}>
                 <div className="logo mb-3">
                   <div className="col-md-12 text-center">
-                    <h1>Login</h1>
+                    <h1>Đăng nhập</h1>
                   </div>
                 </div>
                 <div>
                   <div className={styles.formGroup}>
-                    <label htmlFor="exampleInputEmail1">Email address</label>
-                    <input
-                      type="email"
-                      name="email"
-                      className={styles.formControl}
-                      id="email"
-                      aria-describedby="emailHelp"
-                      placeholder="Enter email"
-                      onChange={(e) => setLoginInfo({...loginInfo, username: e.target.value})}
+                    <InputField
+                      label="Tên đăng nhập"
+                      name="username"
+                      placeholder="Vui lòng điền tên đăng nhập"
+                      required
+                      isError={showValidate && !loginInfo?.username}
+                      errorText={"Vui lòng điền tên đăng nhập"}
+                      value={loginInfo?.username}
+                      onChange={(event) => handleChangeForm(event)}
+                      type="text"
                     />
                   </div>
                   <div className={styles.formGroup}>
-                    <label htmlFor="exampleInputEmail1">Password</label>
-                    <input
-                      type="password"
+                    <InputField
+                      label="Mật khẩu"
                       name="password"
-                      id="password"
-                      className={styles.formControl}
-                      aria-describedby="emailHelp"
-                      placeholder="Enter Password"
-                      onChange={(e) => setLoginInfo({...loginInfo, password: e.target.value})}
+                      placeholder="Vui lòng điền mật khẩu"
+                      required
+                      isError={showValidate && !loginInfo?.password}
+                      errorText={"Vui lòng điền mật khẩu"}
+                      value={loginInfo?.password}
+                      onChange={(event) => handleChangeForm(event)}
+                      type="text"
                     />
                   </div>
                   {/* <div className={styles.formGroup}>
@@ -81,7 +91,7 @@ const Login: NextPage = () => {
                       className={`${styles.btn} ${styles.btnBlock} ${styles.txTfm} ${styles.btnPrimary} ${styles.mybtn}`}
                       onClick={() => handleLogin()}
                     >
-                      Login
+                      Đăng nhập
                     </button>
                   </div>
                   <div className="col-md-12 ">
@@ -92,13 +102,10 @@ const Login: NextPage = () => {
                   </div>
                   <div className="col-md-12 mb-3">
                     <div className="text-center">
-                      <div className={`${styles.btn} ${styles.google} ${styles.btn} ${styles.mybtn}`}><i className="fa fa-google-plus">
-                      </i> Signup using Google
+                      <div className={`${styles.btn} ${styles.google} ${styles.btn} ${styles.mybtn}`} onClick={() => router.push('/register')} role="presentation"><i className="fa fa-google-plus">
+                      </i> Đăng ký
                       </div>
                     </div>
-                  </div>
-                  <div className={styles.formGroup}>
-                    <p className="text-center">{`Don't have account?`}<a href="replace">Sign up here</a></p>
                   </div>
                 </div>
               </div>

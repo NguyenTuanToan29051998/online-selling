@@ -80,6 +80,7 @@
   }
   
   .myform {
+    margin-top: 3rem !important;
     position: relative;
     display: -ms-flexbox;
     display: flex;
@@ -144,7 +145,6 @@
     text-align: center;
     outline: none;
     border: 1px solid lightgrey;
-    cursor: pointer;
   }
   
   form .error {
@@ -153,5 +153,10 @@
   
   #second {
     display: none;
+  }
+
+  .inputRadio {
+    cursor: pointer;
+    width: 20px;
   }
 }

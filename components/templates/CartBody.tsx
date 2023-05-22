@@ -12,6 +12,7 @@ import CustomDropdown from '../atoms/dropdowns/Dropdown';
 import { NavDropdown } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { NUMBER_REG } from '../../public/const';
 
 type Discount = {
   id: number,
@@ -61,8 +62,9 @@ const CartBody: FC<PropTypes> = (props) => {
     }
     CartApiManagement.updateProductInCart(cartId, isIncrease ? quantity + 1 : quantity -1).then((resCart) => {
       if (!resCart.data.success) {
-        toast(resCart.data.message);
+        toast.error(resCart.data.message);
       }
+      // setTotalPrice(resCart.data.cartDetail.totalCost);
       CartApiManagement.getCartDetail(userInfo.id).then((res) => {
         setCartDetail(res.data);
       }).catch(err => console.log(err));
@@ -70,9 +72,10 @@ const CartBody: FC<PropTypes> = (props) => {
   };
 
   const handleUpdateQuantity = (cartId: number, quantity: string,) => {
+    if (!NUMBER_REG.test(quantity)) return;
     CartApiManagement.updateProductInCart(cartId, +quantity).then((resCart) => {
       if (!resCart.data.success) {
-        toast(resCart.data.message);
+        toast.error(resCart.data.message);
       }
       CartApiManagement.getCartDetail(userInfo.id).then((res) => {
         setCartDetail(res.data);
@@ -102,11 +105,12 @@ const CartBody: FC<PropTypes> = (props) => {
     cartDetail.cartDetail.cartItems.map((item) => {
       if (item.id === cartId) {
         item.isSelected = !item.isSelected;
-        setTotalPrice(item.isSelected ? totalPrice + item.newPrice * item.quantity : totalPrice - item.newPrice * item.quantity);
+        setTotalPrice(item.isSelected ? 0 + item.newPrice * item.quantity : 0);
         return item;
       }
       return item;
     });
+
     setCartDetail({...cartDetail});
   };
 
@@ -135,6 +139,16 @@ const CartBody: FC<PropTypes> = (props) => {
   };
 
   useEffect(() => {
+    let userInfo: any;
+    if (typeof window !== 'undefined') {
+      userInfo = JSON.parse(localStorage.getItem('user-info') || '[]');
+    };
+    if (!userInfo?.id) {
+      router.push('/');
+    }
+  }, []);
+
+  useEffect(() => {
     let total = 0;
     cartDetail.cartDetail.cartItems.map((item) => {
       item.isSelected = !selectedAll ? false : true;
@@ -147,10 +161,10 @@ const CartBody: FC<PropTypes> = (props) => {
   }, [selectedAll]);
 
   useEffect(() => {
-    if (totalPrice >= 300000) {
-      setTransportFee(10000);
-    } else if (totalPrice >= 500000) {
+    if (totalPrice >= 500000) {
       setTransportFee(20000);
+    } else if (totalPrice >= 300000) {
+      setTransportFee(10000);
     } else setTransportFee(0);
 
   }, [totalPrice]);
@@ -226,7 +240,7 @@ const CartBody: FC<PropTypes> = (props) => {
                     />
                     <div className="d-flex">
                       <Image
-                        src={`/assets/${item.product.product.image}`}
+                        src={`/assets/${item.product.thumnail}`}
                         width={77}
                         height={80}
                         alt={item.product.product.name}
@@ -267,7 +281,7 @@ const CartBody: FC<PropTypes> = (props) => {
                       >{addIcon}</div>
                     </div>
                   </div>
-                  <div className={styles.finalProduct}>{formatNumberWithDot(item.newPrice)} ₫</div>
+                  <div className={styles.finalProduct}>{formatNumberWithDot(item.newPrice * item.quantity)} ₫</div>
                   <div
                     className={styles.productremove}
                     onClick={() => handleOpenModalDelete(item.id)}
@@ -319,8 +333,8 @@ const CartBody: FC<PropTypes> = (props) => {
                 <span className={styles.pricesValue}>{formatNumberWithDot(totalPrice)}đ</span>
               </div>
               <div className="d-flex justify-content-between mt-1">
-                <span className={styles.pricesText}>Phí vận chuyển</span>
-                <span className={styles.pricesValue}>{formatNumberWithDot(transportFee)}đ</span>
+                <span className={styles.pricesText}>Giảm phí vận chuyển</span>
+                <span className={styles.pricesValue}>-{formatNumberWithDot(transportFee)}đ</span>
               </div>
             </div>
             <div className={styles.pricesTotal}>
@@ -411,7 +425,7 @@ const CartBody: FC<PropTypes> = (props) => {
                   />
                   <div>
                     <div>{item.discount.discountName}</div>
-                    Giảm {item.discount.decreasePercent}{item.discount.unit.includes("percent") ? "%" : "K"}
+                    Giảm {item.discount.decreasePercent}{item.discount.unit.includes("percent") ? "%" : "đ"}
                   </div>
                 </div>
               </div>
